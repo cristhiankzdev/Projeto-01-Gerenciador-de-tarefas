@@ -165,9 +165,24 @@ function openPopup(cell, dateStr) {
     renderGrid()
   })
 
-  cell.style.position = 'relative'
-  cell.appendChild(popup)
+  // Append to body and position with fixed coords to avoid clipping
+  document.body.appendChild(popup)
   activePopup = popup
+
+  const rect = cell.getBoundingClientRect()
+  const popupW = 210
+  let left = rect.left + rect.width / 2 - popupW / 2
+  left = Math.max(8, Math.min(left, window.innerWidth - popupW - 8))
+
+  // Show above if there's not enough space below
+  const spaceBelow = window.innerHeight - rect.bottom
+  if (spaceBelow < 180) {
+    popup.style.bottom = (window.innerHeight - rect.top + 6) + 'px'
+  } else {
+    popup.style.top = (rect.bottom + 6) + 'px'
+  }
+  popup.style.left = left + 'px'
+
   setTimeout(() => popup.querySelector('.cal-popup-input').focus(), 10)
 }
 
