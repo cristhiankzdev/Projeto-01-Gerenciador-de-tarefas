@@ -202,98 +202,77 @@ function createTaskElement(task, idx) {
   const div = document.createElement('div')
   const cat = task.categories
   const emoji = cat?.emoji ?? '📌'
-  const catColor = cat?.color ?? 'var(--text-soft)'
-  const priorityLabel = { alta: 'Alta', media: 'Média', baixa: 'Baixa' }[task.priority]
-  const priorityClass = { alta: 'priority-high', media: 'priority-medium', baixa: 'priority-low' }[task.priority]
+  const dotClass = { alta: 'p-alta', media: 'p-media', baixa: 'p-baixa' }[task.priority] ?? 'p-media'
 
   div.className = `task-card${task.completed ? ' completed' : ''}`
   div.dataset.id = task.id
   div.style.animationDelay = `${idx * 0.05}s`
-
-  const navButtons = `
-    <div class="task-nav">
-      <button class="nav-arrow move-prev" title="Mover para dia anterior">←</button>
-      <button class="nav-arrow move-next" title="Mover para próximo dia">→</button>
-    </div>
-  `
 
   if (task.type === 'steps' && Array.isArray(task.steps) && task.steps.length) {
     const steps = task.steps
     const current = task.current_step ?? 0
     const total = steps.length
     const progress = task.completed ? 100 : Math.round((current / total) * 100)
-    const currentStepTitle = task.completed ? 'Concluída!' : (steps[current]?.title ?? '')
 
     div.innerHTML = `
-      <div class="task-main steps-main">
-        <div class="task-top">
-          <span class="cat-emoji" style="color:${catColor}">${emoji}</span>
-          <span class="task-title${task.completed ? ' strikethrough' : ''}">${task.title}</span>
+      <div class="tc-row">
+        <button class="tc-arrow move-prev" title="Dia anterior">←</button>
+        <span class="tc-emoji">${emoji}</span>
+        <span class="tc-title${task.completed ? ' done' : ''}">${task.title}</span>
+        <div class="tc-progress">
+          <div class="tc-prog-bar"><div class="tc-prog-fill" style="width:${progress}%"></div></div>
+          <span class="tc-prog-label">${task.completed ? total : current}/${total}</span>
         </div>
-        <div class="step-info">
-          <span class="step-arrow">→</span>
-          <span class="step-current">${currentStepTitle}</span>
-        </div>
-        <div class="step-progress-bar">
-          <div class="step-fill" style="width:${progress}%"></div>
-        </div>
-        <div class="step-count">Etapa ${task.completed ? total : current + 1} de ${total}</div>
-        <button class="step-expand-toggle" type="button">▾ Ver etapas</button>
-        <div class="steps-tooltip" hidden>
-          ${steps.map((s, i) => {
-            const isDone = task.completed || i < current
-            const isActive = !task.completed && i === current
-            return `
-              <div class="step-item${isDone ? ' done' : isActive ? ' active-step' : ' pending'}">
-                <span class="step-icon">${isDone ? '✓' : isActive ? '→' : '○'}</span>
-                <span>${s.title}</span>
-              </div>
-            `
-          }).join('')}
-        </div>
-        <div class="task-footer" style="margin-top:6px">
-          <span class="priority-tag ${priorityClass}">${priorityLabel}</span>
-        </div>
+        <span class="tc-dot ${dotClass}"></span>
+        <button class="tc-expand-btn" title="Ver etapas">▾</button>
+        <button class="tc-arrow move-next" title="Próximo dia">→</button>
       </div>
-      ${navButtons}
+      <div class="tc-steps-list" hidden>
+        ${steps.map((s, i) => {
+          const isDone = task.completed || i < current
+          const isActive = !task.completed && i === current
+          return `<div class="tc-step-item${isDone ? ' done' : isActive ? ' active-step' : ' pending'}">
+            <span class="tc-step-icon">${isDone ? '✓' : isActive ? '→' : '○'}</span>
+            <span>${s.title}</span>
+          </div>`
+        }).join('')}
+      </div>
     `
 
+    const tcRow = div.querySelector('.tc-row')
     if (!task.completed) {
-      div.querySelector('.task-main').addEventListener('click', e => {
-        if (e.target.closest('.step-expand-toggle, .steps-tooltip, .task-nav')) return
+      tcRow.addEventListener('click', e => {
+        if (e.target.closest('.tc-arrow, .tc-expand-btn')) return
         advanceStep(task)
       })
     } else {
-      div.addEventListener('click', e => {
-        if (e.target.closest('.task-nav')) return
+      tcRow.addEventListener('click', e => {
+        if (e.target.closest('.tc-arrow, .tc-expand-btn')) return
         openTaskModal(task)
       })
     }
 
-    div.querySelector('.step-expand-toggle').addEventListener('click', e => {
+    div.querySelector('.tc-expand-btn').addEventListener('click', e => {
       e.stopPropagation()
-      const tooltip = div.querySelector('.steps-tooltip')
-      tooltip.hidden = !tooltip.hidden
-      e.currentTarget.textContent = tooltip.hidden ? '▾ Ver etapas' : '▴ Ocultar'
+      const list = div.querySelector('.tc-steps-list')
+      list.hidden = !list.hidden
+      e.currentTarget.textContent = list.hidden ? '▾' : '▴'
     })
 
   } else {
     div.innerHTML = `
-      <div class="task-main">
-        <div class="task-top">
-          <span class="cat-emoji" style="color:${catColor}">${emoji}</span>
-          <span class="task-title${task.completed ? ' strikethrough' : ''}">${task.title}</span>
-        </div>
-        <div class="task-footer">
-          <span class="priority-tag ${priorityClass}">${priorityLabel}</span>
-          <button class="check-btn${task.completed ? ' checked' : ''}" title="${task.completed ? 'Desmarcar' : 'Concluir'}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <path class="check-path" d="M5 13l4 4L19 7"/>
-            </svg>
-          </button>
-        </div>
+      <div class="tc-row">
+        <button class="tc-arrow move-prev" title="Dia anterior">←</button>
+        <span class="tc-emoji">${emoji}</span>
+        <span class="tc-title${task.completed ? ' done' : ''}">${task.title}</span>
+        <span class="tc-dot ${dotClass}"></span>
+        <button class="check-btn${task.completed ? ' checked' : ''}" title="${task.completed ? 'Desmarcar' : 'Concluir'}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path class="check-path" d="M5 13l4 4L19 7"/>
+          </svg>
+        </button>
+        <button class="tc-arrow move-next" title="Próximo dia">→</button>
       </div>
-      ${navButtons}
     `
 
     div.querySelector('.check-btn').addEventListener('click', e => {
@@ -301,8 +280,8 @@ function createTaskElement(task, idx) {
       toggleComplete(task, e.currentTarget)
     })
 
-    div.addEventListener('click', e => {
-      if (e.target.closest('.check-btn, .task-nav')) return
+    div.querySelector('.tc-row').addEventListener('click', e => {
+      if (e.target.closest('.check-btn, .tc-arrow')) return
       openTaskModal(task)
     })
   }
