@@ -91,6 +91,18 @@ CREATE POLICY "users_own_categories" ON categories FOR ALL USING (auth.uid() = u
 CREATE POLICY "users_own_tasks" ON tasks FOR ALL USING (auth.uid() = user_id);
 CREATE POLICY "users_own_notes" ON notes FOR ALL USING (auth.uid() = user_id);
 
+-- Tabela de eventos do mini calendário
+CREATE TABLE events (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  date DATE NOT NULL,
+  label TEXT DEFAULT 'work',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, date)
+);
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "users_own_events" ON events FOR ALL USING (auth.uid() = user_id);
+
 -- Cria categorias padrão automaticamente quando um usuário se cadastra
 CREATE OR REPLACE FUNCTION create_default_categories()
 RETURNS TRIGGER AS $$
