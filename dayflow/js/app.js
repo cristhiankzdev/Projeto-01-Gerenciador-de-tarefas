@@ -249,7 +249,9 @@ function renderTasksInGrid() {
 
     catKeys.forEach(key => {
       const { simple, steps } = catGroups[key]
-      const allTasks = [...simple, ...steps]
+      const allTasks = [...simple, ...steps].sort((a, b) =>
+        (priorityOrder[a.priority] ?? 1) - (priorityOrder[b.priority] ?? 1)
+      )
 
       if (multiCat) {
         const cat = key === '__none__' ? null : categories.find(c => c.id === key)
