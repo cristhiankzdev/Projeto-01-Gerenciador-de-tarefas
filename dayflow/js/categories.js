@@ -11,13 +11,11 @@ export function initCategories(userId, onChanged) {
   _onChanged = onChanged
 
   const modal = document.getElementById('categories-modal')
-  const openBtn = document.getElementById('settings-btn')
   const closeBtn = document.getElementById('close-categories-modal')
 
-  openBtn?.addEventListener('click', () => {
-    modal.classList.add('open')
-    renderCategoriesList()
-  })
+  // Opening is handled by manage-cats-btn in app.js
+  const manageBtn = document.getElementById('manage-cats-btn')
+  manageBtn?.addEventListener('click', renderCategoriesList)
 
   closeBtn?.addEventListener('click', () => modal.classList.remove('open'))
   modal?.addEventListener('click', e => {
