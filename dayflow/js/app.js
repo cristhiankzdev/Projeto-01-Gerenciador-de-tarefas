@@ -111,9 +111,22 @@ async function loadCategories() {
 function renderCategoryPills() {
   const container = document.getElementById('category-pills')
   const totalCount = tasks.length
+
+  // Order pills by appearance order in today's tasks
+  const todayStr = localDateStr(getGridDates()[2])
+  const todayTasks = tasks.filter(t => t.date === todayStr)
+  const todayOrder = []
+  todayTasks.forEach(t => {
+    if (t.category_id && !todayOrder.includes(t.category_id)) todayOrder.push(t.category_id)
+  })
+  const orderedCategories = [
+    ...todayOrder.map(id => categories.find(c => c.id === id)).filter(Boolean),
+    ...categories.filter(c => !todayOrder.includes(c.id)),
+  ]
+
   container.innerHTML = [
     `<button class="pill${activeCategoryFilter === 'all' ? ' active' : ''}" data-cat="all">Todas <span class="pill-count">${totalCount}</span></button>`,
-    ...categories.map(c => {
+    ...orderedCategories.map(c => {
       const count = tasks.filter(t => t.category_id === c.id).length
       return `<button class="pill${activeCategoryFilter === c.id ? ' active' : ''}" data-cat="${c.id}" style="--cat-color:${c.color}">${c.emoji} ${c.name} <span class="pill-count">${count}</span></button>`
     }),
