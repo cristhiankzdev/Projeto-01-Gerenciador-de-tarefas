@@ -1410,3 +1410,50 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
   .modal-actions { width: 100%; justify-content: flex-end; }
   .btn-danger { width: 100%; }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* MOBILE / DAY-FOCUS VIEW                                                      */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+#mobile-view-btn { display: none; }
+@media (max-width: 900px) { #mobile-view-btn { display: flex; } }
+
+body.view-mobile {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+}
+body.view-mobile .app-main {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: 12px;
+}
+body.view-mobile .grid-wrapper {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: visible;
+}
+body.view-mobile .day-grid {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+body.view-mobile .day-column:not(.today) { display: none; }
+body.view-mobile .notes-panel { display: none; }
+body.view-mobile .today {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+body.view-mobile .task-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+body.view-mobile #mobile-view-btn { color: var(--primary); }
