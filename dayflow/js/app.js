@@ -213,7 +213,6 @@ function createTaskElement(task, idx) {
 
     div.innerHTML = `
       <div class="tc-row">
-        <button class="tc-arrow move-prev" title="Dia anterior">←</button>
         <span class="tc-emoji">${emoji}</span>
         <span class="tc-title${task.completed ? ' done' : ''}">${task.title}</span>
         <div class="tc-progress">
