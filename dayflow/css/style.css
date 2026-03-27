@@ -614,7 +614,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 .tc-steps-list {
   border-top: 1px solid var(--border);
   margin-top: 2px;
-  padding-top: 6px;
+  padding: 4px 4px 2px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -622,9 +622,9 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 .tc-step-item {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   font-size: 11px;
-  padding: 0 2px;
+  padding: 1px 0;
 }
 .tc-step-item.done      { color: var(--secondary); text-decoration: line-through; opacity: 0.65; }
 .tc-step-item.active-step { color: var(--primary); font-weight: 600; }
