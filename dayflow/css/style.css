@@ -257,6 +257,39 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
 .btn-spinner { font-size: 14px; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+.btn-google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+.btn-google:hover { background: var(--bg); border-color: #c0c4cc; }
+.btn-google:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-soft);
+  font-size: 12px;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
 /* ─────────────────────────────────────────────────────────────────────────── */
 /* APP HEADER                                                                   */
 /* ─────────────────────────────────────────────────────────────────────────── */
