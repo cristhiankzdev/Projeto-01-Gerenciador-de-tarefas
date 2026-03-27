@@ -256,7 +256,7 @@ function createTaskElement(task, idx) {
     const total = steps.length
     const progress = task.completed ? 100 : Math.round((current / total) * 100)
 
-    const currentLabel = task.completed ? '✓' : (steps[current]?.title ?? '')
+    const checkSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>`
 
     div.innerHTML = `
       <div class="tc-row">
@@ -267,7 +267,6 @@ function createTaskElement(task, idx) {
           <span class="tc-prog-label">${task.completed ? total : current}/${total}</span>
         </div>
         <span class="tc-dot ${dotClass}"></span>
-        ${!task.completed ? `<button class="tc-step-advance-btn" title="Concluir: ${currentLabel}">▶</button>` : ''}
         <button class="tc-expand-btn" title="Ver etapas">▾</button>
         ${!task.completed ? '<button class="tc-arrow move-next" title="Próximo dia">→</button>' : ''}
       </div>
@@ -275,23 +274,27 @@ function createTaskElement(task, idx) {
         ${steps.map((s, i) => {
           const isDone = task.completed || i < current
           const isActive = !task.completed && i === current
-          return `<div class="tc-step-item${isDone ? ' done' : isActive ? ' active-step' : ' pending'}">
-            <span class="tc-step-icon">${isDone ? '✓' : isActive ? '→' : '○'}</span>
+          const btnClass = isDone ? ' checked' : isActive ? ' active-step' : ''
+          return `<div class="tc-step-item${isDone ? ' done' : isActive ? ' active-step' : ' pending'}" data-step-idx="${i}">
+            <button class="tc-step-check${btnClass}" data-step-idx="${i}">${isDone ? checkSvg : ''}</button>
             <span>${s.title}</span>
           </div>`
         }).join('')}
       </div>
     `
 
-    // Clicking the row opens the modal; ▶ button advances the step
-    div.querySelector('.tc-row').addEventListener('click', e => {
-      if (e.target.closest('.tc-arrow, .tc-expand-btn, .tc-step-advance-btn')) return
-      openTaskModal(task)
+    div.querySelectorAll('.tc-step-check').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation()
+        const stepIdx = Number(btn.dataset.stepIdx)
+        const newCurrentStep = stepIdx < current ? stepIdx : stepIdx + 1
+        setStepIndex(task, newCurrentStep)
+      })
     })
 
-    div.querySelector('.tc-step-advance-btn')?.addEventListener('click', e => {
-      e.stopPropagation()
-      advanceStep(task)
+    div.querySelector('.tc-row').addEventListener('click', e => {
+      if (e.target.closest('.tc-arrow, .tc-expand-btn')) return
+      openTaskModal(task)
     })
 
     div.querySelector('.tc-expand-btn').addEventListener('click', e => {
