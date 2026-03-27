@@ -992,6 +992,92 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 }
 .notes-area::placeholder { color: var(--text-soft); }
 
+/* ── Mini Calendar ───────────────────────────────────────────────────────── */
+.mini-cal {
+  border-top: 1px solid #EDE4C8;
+  padding-top: 12px;
+  margin-top: 4px;
+}
+
+.mini-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.cal-month-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.cal-nav-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-size: 15px;
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  line-height: 1;
+}
+.cal-nav-btn:hover { background: var(--border); color: var(--text); }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cal-dow {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-align: center;
+  padding-bottom: 3px;
+  text-transform: uppercase;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  cursor: pointer;
+  position: relative;
+}
+.cal-day:hover { background: var(--border); }
+.cal-day.cal-blank { cursor: default; }
+.cal-day.cal-today {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 700;
+}
+.cal-day.cal-marked {
+  background: var(--primary);
+  color: white;
+}
+.cal-day.cal-marked.cal-today {
+  background: var(--primary);
+  color: white;
+}
+
+.cal-hint {
+  font-size: 10px;
+  color: var(--text-soft);
+  text-align: center;
+  margin-top: 6px;
+  opacity: 0.7;
+}
+
 /* ─────────────────────────────────────────────────────────────────────────── */
 /* TOAST NOTIFICATIONS                                                          */
 /* ─────────────────────────────────────────────────────────────────────────── */
