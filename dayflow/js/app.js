@@ -13,6 +13,7 @@ let editingTask = null
 let editingDate = null
 let modalSteps = []
 let notesDebounce = null
+const collapsedCategories = new Set()
 
 const TIPS = [
   'Cada pequeno passo te aproxima do seu grande objetivo.',
