@@ -420,6 +420,14 @@ function initTaskModal() {
 
   document.getElementById('save-task-btn').addEventListener('click', saveTask)
   document.getElementById('delete-task-btn').addEventListener('click', () => confirmDeleteTask(editingTask))
+  document.getElementById('archive-task-btn').addEventListener('click', async () => {
+    if (!editingTask) return
+    await archiveTask(editingTask.id)
+    tasks = tasks.filter(t => t.id !== editingTask.id)
+    closeModal()
+    renderTasksInGrid()
+    showToast('Tarefa arquivada')
+  })
 
   // Inline category creation
   document.getElementById('add-cat-inline-btn').addEventListener('click', () => {
