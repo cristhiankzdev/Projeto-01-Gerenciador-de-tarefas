@@ -7,9 +7,29 @@ export async function getTasks(userId, startDate, endDate) {
     .from('tasks')
     .select('*, categories(name, emoji, color)')
     .eq('user_id', userId)
+    .neq('archived', true)
     .gte('date', startDate)
     .lte('date', endDate)
     .order('created_at')
+  if (error) throw error
+  return data ?? []
+}
+
+export async function archiveTask(id) {
+  const { error } = await supabase
+    .from('tasks')
+    .update({ archived: true })
+    .eq('id', id)
+  if (error) throw error
+}
+
+export async function getArchivedTasks(userId) {
+  const { data, error } = await supabase
+    .from('tasks')
+    .select('*, categories(name, emoji, color)')
+    .eq('user_id', userId)
+    .eq('archived', true)
+    .order('completed_at', { ascending: false })
   if (error) throw error
   return data ?? []
 }
