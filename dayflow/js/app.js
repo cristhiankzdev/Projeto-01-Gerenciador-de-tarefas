@@ -298,7 +298,8 @@ function createTaskElement(task, idx) {
   const div = document.createElement('div')
   const cat = task.categories
   const emoji = cat?.emoji ?? '📌'
-  const dotClass = { alta: 'p-alta', media: 'p-media', baixa: 'p-baixa' }[task.priority] ?? 'p-media'
+  const priorityLabel = { alta: 'alta', media: 'média', baixa: 'baixa' }[task.priority] ?? 'média'
+  const priorityClass = { alta: 'p-alta', media: 'p-media', baixa: 'p-baixa' }[task.priority] ?? 'p-media'
 
   div.className = `task-card${task.completed ? ' completed' : ''}`
   div.dataset.id = task.id
