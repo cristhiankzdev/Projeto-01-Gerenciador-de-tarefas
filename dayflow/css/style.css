@@ -872,6 +872,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   justify-content: center;
 }
 .close-btn:hover { background: var(--bg); color: var(--text); }
+.close-btn svg { width: 14px; height: 14px; }
 
 .modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
 
