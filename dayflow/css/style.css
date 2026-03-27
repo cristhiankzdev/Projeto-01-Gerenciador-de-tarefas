@@ -381,8 +381,8 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 .day-column {
   background: var(--card);
   border-radius: var(--radius);
-  border: 1.5px solid var(--border);
-  padding: 12px;
+  border: 1px solid var(--border);
+  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 8px;
