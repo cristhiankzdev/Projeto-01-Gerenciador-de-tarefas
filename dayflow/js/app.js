@@ -602,6 +602,28 @@ function closeModal() {
   modalSteps = []
 }
 
+// ── Settings modal ─────────────────────────────────────────────────────────────
+function initSettingsModal() {
+  const modal = document.getElementById('settings-modal')
+  document.getElementById('settings-btn').addEventListener('click', () => {
+    document.getElementById('settings-name-input').value =
+      document.getElementById('user-name').textContent
+    modal.classList.add('open')
+  })
+  document.getElementById('close-settings-modal').addEventListener('click', () => modal.classList.remove('open'))
+  document.getElementById('cancel-settings-btn').addEventListener('click', () => modal.classList.remove('open'))
+  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open') })
+
+  document.getElementById('save-settings-btn').addEventListener('click', async () => {
+    const name = document.getElementById('settings-name-input').value.trim()
+    if (!name) return
+    await updateProfile(currentUser.id, name)
+    document.getElementById('user-name').textContent = name
+    modal.classList.remove('open')
+    showToast('Perfil atualizado!')
+  })
+}
+
 // ── Notes ─────────────────────────────────────────────────────────────────────
 async function initNotes() {
   const content = await getNote(currentUser.id)
