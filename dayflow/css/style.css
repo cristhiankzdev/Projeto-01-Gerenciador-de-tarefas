@@ -1047,7 +1047,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   color: var(--text);
   line-height: 1.6;
   outline: none;
-  min-height: 200px;
+  min-height: 120px;
 }
 .notes-area::placeholder { color: var(--text-soft); }
 
