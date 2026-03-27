@@ -234,22 +234,20 @@ function renderTasksInGrid() {
       return
     }
 
-    // Group by category, then simple before steps within each group
+    // Group by category
     const catGroups = {}
     const catKeys = []
     dateTasks.forEach(task => {
       const key = task.category_id ?? '__none__'
-      if (!catGroups[key]) { catGroups[key] = { simple: [], steps: [] }; catKeys.push(key) }
-      if (task.type === 'steps') catGroups[key].steps.push(task)
-      else catGroups[key].simple.push(task)
+      if (!catGroups[key]) { catGroups[key] = []; catKeys.push(key) }
+      catGroups[key].push(task)
     })
 
     const multiCat = catKeys.length > 1
     let idx = 0
 
     catKeys.forEach(key => {
-      const { simple, steps } = catGroups[key]
-      const allTasks = [...simple, ...steps].sort((a, b) =>
+      const allTasks = catGroups[key].sort((a, b) =>
         (priorityOrder[a.priority] ?? 1) - (priorityOrder[b.priority] ?? 1)
       )
 
