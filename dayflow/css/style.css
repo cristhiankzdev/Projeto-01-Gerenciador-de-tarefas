@@ -433,7 +433,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 .task-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   flex: 1;
 }
 
