@@ -1097,8 +1097,8 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   padding: 0;
 }
 .cal-day:hover .cal-day-inner { background: var(--bg); }
-.cal-day.cal-other-month { color: var(--text-soft); opacity: 0.4; cursor: default; }
-.cal-day.cal-other-month:hover .cal-day-inner { background: none; }
+.cal-day.cal-other-month { color: var(--text-soft); opacity: 0.45; }
+.cal-day.cal-other-month:hover .cal-day-inner { background: var(--bg); }
 
 .cal-day-inner {
   width: 28px;
