@@ -530,11 +530,15 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
   text-transform: uppercase;
   letter-spacing: 0.03em;
   flex-shrink: 0;
-  opacity: 0.85;
+  color: #fff;
+  border-radius: 4px;
+  padding: 1px 0;
+  min-width: 34px;
+  text-align: center;
 }
-.tc-priority.p-alta  { color: var(--high); }
-.tc-priority.p-media { color: var(--medium); }
-.tc-priority.p-baixa { color: var(--low); }
+.tc-priority.p-alta  { background: #b34040; }
+.tc-priority.p-media { background: #b5831a; }
+.tc-priority.p-baixa { background: #4a7a4a; }
 
 /* check button — compact */
 .check-btn {
