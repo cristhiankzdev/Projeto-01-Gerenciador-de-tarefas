@@ -113,6 +113,9 @@ function renderDailyTip() {
 // ── Categories ────────────────────────────────────────────────────────────────
 async function loadCategories() {
   categories = await getCategories(currentUser.id)
+  collapsedCategories.clear()
+  categories.forEach(c => collapsedCategories.add(c.id))
+  collapsedCategories.add('__none__')
   renderCategoryPills()
 }
 
