@@ -321,7 +321,7 @@ function createTaskElement(task, idx) {
           <div class="tc-prog-bar"><div class="tc-prog-fill" style="width:${progress}%"></div></div>
           <span class="tc-prog-label">${task.completed ? total : current}/${total}</span>
         </div>
-        <span class="tc-dot ${dotClass}"></span>
+        <span class="tc-priority ${priorityClass}">${priorityLabel}</span>
         <button class="tc-expand-btn" title="Ver etapas">▾</button>
         ${!task.completed ? '<button class="tc-arrow move-next" title="Próximo dia">→</button>' : ''}
       </div>
@@ -363,7 +363,7 @@ function createTaskElement(task, idx) {
     div.innerHTML = `
       <div class="tc-row">
         <span class="tc-title${task.completed ? ' done' : ''}">${task.title}</span>
-        <span class="tc-dot ${dotClass}"></span>
+        <span class="tc-priority ${priorityClass}">${priorityLabel}</span>
         ${task.completed ? '<button class="tc-archive-btn" title="Arquivar">📦</button>' : ''}
         <button class="check-btn${task.completed ? ' checked' : ''}" title="${task.completed ? 'Desmarcar' : 'Concluir'}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
