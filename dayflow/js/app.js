@@ -692,9 +692,6 @@ async function openArchiveModal() {
     })
     list.appendChild(item)
   })
-
-  document.getElementById('close-archive-modal').onclick = () => modal.classList.remove('open')
-  modal.onclick = e => { if (e.target === modal) modal.classList.remove('open') }
 }
 
 // ── Start ─────────────────────────────────────────────────────────────────────
