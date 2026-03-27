@@ -281,7 +281,6 @@ function createTaskElement(task, idx) {
     })
   }
 
-  div.querySelector('.move-prev').addEventListener('click', e => { e.stopPropagation(); moveTaskDay(task, -1) })
   div.querySelector('.move-next').addEventListener('click', e => { e.stopPropagation(); moveTaskDay(task, 1) })
 
   // Drag & drop
