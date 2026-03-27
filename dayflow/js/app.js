@@ -645,5 +645,44 @@ async function initNotes() {
   })
 }
 
+// ── Archive modal ─────────────────────────────────────────────────────────────
+async function openArchiveModal() {
+  const modal = document.getElementById('archive-modal')
+  const list  = document.getElementById('archive-list')
+  modal.classList.add('open')
+  list.innerHTML = '<p class="loading-text">Carregando...</p>'
+
+  const archived = await getArchivedTasks(currentUser.id)
+
+  if (!archived.length) {
+    list.innerHTML = '<p class="empty-text">Nenhuma tarefa arquivada.</p>'
+    return
+  }
+
+  list.innerHTML = ''
+  archived.forEach(task => {
+    const cat = task.categories
+    const item = document.createElement('div')
+    item.className = 'archive-item'
+    item.innerHTML = `
+      <span class="archive-emoji">${cat?.emoji ?? '📌'}</span>
+      <div class="archive-info">
+        <span class="archive-title">${task.title}</span>
+        <span class="archive-date">${task.date}</span>
+      </div>
+      <button class="archive-delete-btn" data-id="${task.id}" title="Excluir permanentemente">🗑️</button>
+    `
+    item.querySelector('.archive-delete-btn').addEventListener('click', async () => {
+      await deleteTask(task.id)
+      item.remove()
+      if (!list.children.length) list.innerHTML = '<p class="empty-text">Nenhuma tarefa arquivada.</p>'
+    })
+    list.appendChild(item)
+  })
+
+  document.getElementById('close-archive-modal').onclick = () => modal.classList.remove('open')
+  modal.onclick = e => { if (e.target === modal) modal.classList.remove('open') }
+}
+
 // ── Start ─────────────────────────────────────────────────────────────────────
 init()
