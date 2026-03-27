@@ -218,6 +218,18 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 }
 .btn-danger:hover { background: #FFE0E0; }
 
+.btn-archive {
+  background: #FFF8F0;
+  border: 1.5px solid #F5DFC0;
+  color: var(--primary);
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+.btn-archive:hover { background: #FDEBD0; }
+
 .icon-btn {
   width: 32px;
   height: 32px;
