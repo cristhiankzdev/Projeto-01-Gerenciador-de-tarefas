@@ -131,7 +131,7 @@ export async function getEvents(userId, year, month) {
   const end   = `${year}-${String(month).padStart(2, '0')}-31`
   const { data, error } = await supabase
     .from('events')
-    .select('date, label')
+    .select('date, label, color, description')
     .eq('user_id', userId)
     .gte('date', start)
     .lte('date', end)
@@ -139,23 +139,21 @@ export async function getEvents(userId, year, month) {
   return data ?? []
 }
 
-export async function toggleEvent(userId, date, label = 'work') {
-  const { data: existing } = await supabase
+export async function setEvent(userId, date, { color = '#4A7FC1', description = '' } = {}) {
+  const { data, error } = await supabase
     .from('events')
-    .select('id')
+    .upsert({ user_id: userId, date, color, description }, { onConflict: 'user_id,date' })
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function deleteEvent(userId, date) {
+  const { error } = await supabase
+    .from('events')
+    .delete()
     .eq('user_id', userId)
     .eq('date', date)
-    .single()
-  if (existing) {
-    await supabase.from('events').delete().eq('id', existing.id)
-    return null
-  } else {
-    const { data, error } = await supabase
-      .from('events')
-      .insert({ user_id: userId, date, label })
-      .select()
-      .single()
-    if (error) throw error
-    return data
-  }
+  if (error) throw error
 }
