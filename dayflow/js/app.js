@@ -218,22 +218,49 @@ function renderTasksInGrid() {
 
     catKeys.forEach(key => {
       const { simple, steps } = catGroups[key]
+      const allTasks = [...simple, ...steps]
 
       if (multiCat) {
         const cat = key === '__none__' ? null : categories.find(c => c.id === key)
+        const color = cat?.color ?? '#9CA3AF'
+        const isCollapsed = collapsedCategories.has(key)
+
+        const group = document.createElement('div')
+        group.className = 'task-cat-group'
+
         const header = document.createElement('div')
         header.className = 'task-cat-header'
-        if (cat) {
-          header.innerHTML = `<span class="task-cat-dot" style="background:${cat.color}"></span><span>${cat.emoji} ${cat.name}</span>`
-        } else {
-          header.innerHTML = `<span class="task-cat-dot"></span><span style="opacity:0.5">Sem categoria</span>`
-        }
-        container.appendChild(header)
-      }
+        header.style.setProperty('--cat-group-color', color)
+        header.innerHTML = `
+          <div class="task-cat-header-left">
+            <span class="task-cat-name">${cat ? `${cat.emoji} ${cat.name}` : '<span style="opacity:0.5">Sem categoria</span>'}</span>
+            <span class="task-cat-count">${allTasks.length}</span>
+          </div>
+          <button class="task-cat-toggle" title="${isCollapsed ? 'Expandir' : 'Minimizar'}">${isCollapsed ? '▸' : '▾'}</button>
+        `
 
-      ;[...simple, ...steps].forEach(task => {
-        container.appendChild(createTaskElement(task, idx++))
-      })
+        const body = document.createElement('div')
+        body.className = 'task-cat-body'
+        if (isCollapsed) body.hidden = true
+
+        header.querySelector('.task-cat-toggle').addEventListener('click', e => {
+          e.stopPropagation()
+          if (collapsedCategories.has(key)) {
+            collapsedCategories.delete(key)
+          } else {
+            collapsedCategories.add(key)
+          }
+          renderTasksInGrid()
+        })
+
+        group.appendChild(header)
+        group.appendChild(body)
+        container.appendChild(group)
+
+        allTasks.forEach(task => body.appendChild(createTaskElement(task, idx++)))
+      } else {
+        allTasks.forEach(task => container.appendChild(createTaskElement(task, idx++)))
+      }
     })
   })
 
