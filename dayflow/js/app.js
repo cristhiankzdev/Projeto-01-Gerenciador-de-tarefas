@@ -81,6 +81,9 @@ async function init() {
 
   document.getElementById('logout-btn').addEventListener('click', signOut)
   document.getElementById('archive-btn').addEventListener('click', openArchiveModal)
+  const archiveModal = document.getElementById('archive-modal')
+  document.getElementById('close-archive-modal').addEventListener('click', () => archiveModal.classList.remove('open'))
+  archiveModal.addEventListener('click', e => { if (e.target === archiveModal) archiveModal.classList.remove('open') })
   initTaskModal()
   initSettingsModal()
 }
