@@ -249,6 +249,7 @@ function createTaskElement(task, idx) {
   div.className = `task-card${task.completed ? ' completed' : ''}`
   div.dataset.id = task.id
   div.style.animationDelay = `${idx * 0.05}s`
+  div.style.setProperty('--task-cat-color', cat?.color ?? 'var(--border)')
 
   if (task.type === 'steps' && Array.isArray(task.steps) && task.steps.length) {
     const steps = task.steps
@@ -260,7 +261,6 @@ function createTaskElement(task, idx) {
 
     div.innerHTML = `
       <div class="tc-row">
-        <span class="tc-emoji">${emoji}</span>
         <span class="tc-title${task.completed ? ' done' : ''}">${task.title}</span>
         <div class="tc-progress">
           <div class="tc-prog-bar"><div class="tc-prog-fill" style="width:${progress}%"></div></div>
