@@ -171,7 +171,7 @@ function renderGrid() {
 // ── Tasks loading ─────────────────────────────────────────────────────────────
 async function loadAndRenderTasks() {
   const dates = getGridDates()
-  tasks = await getTasks(currentUser.id, localDateStr(dates[0]), localDateStr(dates[6]))
+  tasks = await getTasks(currentUser.id, localDateStr(dates[0]), localDateStr(dates[4]))
   renderTasksInGrid()
 }
 
