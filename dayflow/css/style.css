@@ -1009,9 +1009,8 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 .cal-month-label {
   flex: 1;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text);
-  font-family: 'Fraunces', serif;
 }
 
 .cal-nav-btn {
