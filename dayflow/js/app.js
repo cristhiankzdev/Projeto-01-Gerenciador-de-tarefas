@@ -77,9 +77,14 @@ async function init() {
   await loadAndRenderTasks()
   renderDailyTip()
   await initNotes()
+  initCalendar(currentUser.id)
 
   document.getElementById('logout-btn').addEventListener('click', signOut)
+  document.getElementById('manage-cats-btn').addEventListener('click', () => {
+    document.getElementById('categories-modal').classList.add('open')
+  })
   initTaskModal()
+  initSettingsModal()
 }
 
 // ── Daily tip ─────────────────────────────────────────────────────────────────
