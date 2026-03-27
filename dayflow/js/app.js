@@ -1,7 +1,8 @@
 import { getSession, signOut } from './auth.js'
-import { getTasks, createTask, updateTask, deleteTask, getCategories, getNote, saveNote, getProfile } from './db.js'
+import { getTasks, createTask, updateTask, deleteTask, getCategories, getNote, saveNote, getProfile, updateProfile } from './db.js'
 import { launchConfetti } from './confetti.js'
 import { initCategories } from './categories.js'
+import { initCalendar } from './calendar.js'
 
 // ── State ─────────────────────────────────────────────────────────────────────
 let currentUser = null
