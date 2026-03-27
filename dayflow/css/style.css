@@ -1266,6 +1266,63 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 }
 .toast-undo:hover { color: #f8c040; }
 
+/* ── Pill count badge ────────────────────────────────────────────────────── */
+.pill-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-left: 3px;
+}
+.pill.active .pill-count { background: rgba(255,255,255,0.25); }
+
+/* ── Step checkboxes ─────────────────────────────────────────────────────── */
+.tc-step-check {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color var(--transition), background var(--transition);
+  cursor: pointer;
+}
+.tc-step-check svg { width: 9px; height: 9px; stroke: transparent; }
+.tc-step-check.checked { background: var(--secondary); border-color: var(--secondary); }
+.tc-step-check.checked svg { stroke: white; }
+.tc-step-check.active-step { border-color: var(--primary); }
+.tc-step-check:hover { border-color: var(--secondary); }
+
+/* ── Category group headers in task list ─────────────────────────────────── */
+.task-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 2px 2px;
+  margin-top: 2px;
+}
+.task-cat-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-soft);
+  flex-shrink: 0;
+}
+
 /* ─────────────────────────────────────────────────────────────────────────── */
 /* UTILS                                                                        */
 /* ─────────────────────────────────────────────────────────────────────────── */
