@@ -262,12 +262,13 @@ function createTaskElement(task, idx) {
         <span class="tc-emoji">${emoji}</span>
         <span class="tc-title${task.completed ? ' done' : ''}">${task.title}</span>
         <span class="tc-dot ${dotClass}"></span>
+        ${task.completed ? '<button class="tc-archive-btn" title="Arquivar">📦</button>' : ''}
         <button class="check-btn${task.completed ? ' checked' : ''}" title="${task.completed ? 'Desmarcar' : 'Concluir'}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
             <path class="check-path" d="M5 13l4 4L19 7"/>
           </svg>
         </button>
-        <button class="tc-arrow move-next" title="Próximo dia">→</button>
+        ${!task.completed ? '<button class="tc-arrow move-next" title="Próximo dia">→</button>' : ''}
       </div>
     `
 
