@@ -145,15 +145,13 @@ export async function updateProfile(userId, name) {
 
 // ── Events (calendar marks) ────────────────────────────────────────────────────
 
-export async function getEvents(userId, year, month) {
-  const start = `${year}-${String(month).padStart(2, '0')}-01`
-  const end   = `${year}-${String(month).padStart(2, '0')}-31`
+export async function getEvents(userId, startDate, endDate) {
   const { data, error } = await supabase
     .from('events')
     .select('date, label, color, description')
     .eq('user_id', userId)
-    .gte('date', start)
-    .lte('date', end)
+    .gte('date', startDate)
+    .lte('date', endDate)
   if (error) throw error
   return data ?? []
 }
