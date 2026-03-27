@@ -60,28 +60,6 @@ if (loginForm) {
     if (session) window.location.href = 'app.html'
   })
 
-  // Tab switching
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
-      btn.classList.add('active')
-      const tab = btn.dataset.tab
-      document.getElementById('login-form').style.display = tab === 'login' ? 'flex' : 'none'
-      document.getElementById('register-form').style.display = tab === 'register' ? 'flex' : 'none'
-      document.getElementById('login-error').textContent = ''
-      document.getElementById('register-error').textContent = ''
-    })
-  })
-
-  // Password toggles
-  document.querySelectorAll('.toggle-password').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const input = document.getElementById(btn.dataset.target)
-      input.type = input.type === 'password' ? 'text' : 'password'
-      btn.textContent = input.type === 'password' ? '👁️' : '🙈'
-    })
-  })
-
   // Login
   loginForm.addEventListener('submit', async e => {
     e.preventDefault()
