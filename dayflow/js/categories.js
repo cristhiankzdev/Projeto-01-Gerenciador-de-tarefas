@@ -68,7 +68,7 @@ function showCategoryForm(cat = null) {
   let selectedColor = cat?.color ?? COLORS[0]
 
   form.innerHTML = `
-    <h4 style="font-family:Fraunces,serif;margin-bottom:12px">${cat ? 'Editar categoria' : 'Nova categoria'}</h4>
+    <h4 style="margin-bottom:12px">${cat ? 'Editar categoria' : 'Nova categoria'}</h4>
     <div class="form-group">
       <label>Nome</label>
       <input type="text" id="cat-name-input" value="${cat?.name ?? ''}" placeholder="Ex: Trabalho, Academia...">
