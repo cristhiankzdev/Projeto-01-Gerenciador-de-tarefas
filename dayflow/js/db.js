@@ -115,3 +115,47 @@ export async function getProfile(userId) {
     .single()
   return data
 }
+
+export async function updateProfile(userId, name) {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ name })
+    .eq('id', userId)
+  if (error) throw error
+}
+
+// ── Events (calendar marks) ────────────────────────────────────────────────────
+
+export async function getEvents(userId, year, month) {
+  const start = `${year}-${String(month).padStart(2, '0')}-01`
+  const end   = `${year}-${String(month).padStart(2, '0')}-31`
+  const { data, error } = await supabase
+    .from('events')
+    .select('date, label')
+    .eq('user_id', userId)
+    .gte('date', start)
+    .lte('date', end)
+  if (error) throw error
+  return data ?? []
+}
+
+export async function toggleEvent(userId, date, label = 'work') {
+  const { data: existing } = await supabase
+    .from('events')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('date', date)
+    .single()
+  if (existing) {
+    await supabase.from('events').delete().eq('id', existing.id)
+    return null
+  } else {
+    const { data, error } = await supabase
+      .from('events')
+      .insert({ user_id: userId, date, label })
+      .select()
+      .single()
+    if (error) throw error
+    return data
+  }
+}
