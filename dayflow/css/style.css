@@ -949,10 +949,10 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 /* ─────────────────────────────────────────────────────────────────────────── */
 
 .notes-panel {
-  width: 240px;
+  width: 280px;
   flex-shrink: 0;
-  background: #FFFEF7;
-  border: 1.5px solid #EDE4C8;
+  background: var(--card);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
   display: flex;
@@ -961,6 +961,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   position: sticky;
   top: 80px;
   max-height: calc(100vh - 110px);
+  overflow-y: auto;
 }
 
 .notes-header {
