@@ -80,6 +80,7 @@ async function init() {
   initCalendar(currentUser.id)
 
   document.getElementById('logout-btn').addEventListener('click', signOut)
+  document.getElementById('archive-btn').addEventListener('click', openArchiveModal)
   initTaskModal()
   initSettingsModal()
 }
