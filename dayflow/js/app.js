@@ -143,6 +143,11 @@ function renderCategoryPills() {
   container.querySelectorAll('.pill').forEach(btn => {
     btn.addEventListener('click', () => {
       activeCategoryFilter = btn.dataset.cat
+      if (activeCategoryFilter === 'all') {
+        collapsedCategories.clear()
+        categories.forEach(c => collapsedCategories.add(c.id))
+        collapsedCategories.add('__none__')
+      }
       renderCategoryPills()
       renderTasksInGrid()
     })
