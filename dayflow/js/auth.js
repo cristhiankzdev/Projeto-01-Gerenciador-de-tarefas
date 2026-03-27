@@ -66,8 +66,8 @@ if (loginForm) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
       btn.classList.add('active')
       const tab = btn.dataset.tab
-      document.getElementById('login-form').hidden = tab !== 'login'
-      document.getElementById('register-form').hidden = tab !== 'register'
+      document.getElementById('login-form').style.display = tab === 'login' ? 'flex' : 'none'
+      document.getElementById('register-form').style.display = tab === 'register' ? 'flex' : 'none'
       document.getElementById('login-error').textContent = ''
       document.getElementById('register-error').textContent = ''
     })
