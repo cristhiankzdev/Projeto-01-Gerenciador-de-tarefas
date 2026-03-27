@@ -132,7 +132,10 @@
 
       </div>
       <div class="modal-footer">
-        <button id="delete-task-btn" class="btn-danger" style="display:none" aria-label="Excluir tarefa">🗑️ Excluir</button>
+        <div style="display:flex;gap:8px">
+          <button id="delete-task-btn" class="btn-danger" style="display:none" aria-label="Excluir tarefa">🗑️ Excluir</button>
+          <button id="archive-task-btn" class="btn-archive" style="display:none" aria-label="Arquivar tarefa">📦 Arquivar</button>
+        </div>
         <div class="modal-actions">
           <button id="cancel-task-btn" class="btn-secondary">Cancelar</button>
           <button id="save-task-btn" class="btn-primary">Salvar</button>
