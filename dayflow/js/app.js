@@ -509,6 +509,8 @@ function openTaskModal(task = null, date = null) {
 
   document.getElementById('modal-title').textContent = task ? 'Editar Tarefa' : 'Nova Tarefa'
   document.getElementById('delete-task-btn').style.display = task ? 'block' : 'none'
+  const archiveModalBtn = document.getElementById('archive-task-btn')
+  archiveModalBtn.style.display = task?.completed ? 'block' : 'none'
 
   const catSelect = document.getElementById('task-category')
   catSelect.innerHTML = `<option value="">📌 Sem categoria</option>` +
