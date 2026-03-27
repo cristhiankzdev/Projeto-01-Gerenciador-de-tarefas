@@ -215,6 +215,8 @@ function createTaskElement(task, idx) {
     const total = steps.length
     const progress = task.completed ? 100 : Math.round((current / total) * 100)
 
+    const currentLabel = task.completed ? '✓' : (steps[current]?.title ?? '')
+
     div.innerHTML = `
       <div class="tc-row">
         <span class="tc-emoji">${emoji}</span>
@@ -224,8 +226,9 @@ function createTaskElement(task, idx) {
           <span class="tc-prog-label">${task.completed ? total : current}/${total}</span>
         </div>
         <span class="tc-dot ${dotClass}"></span>
+        ${!task.completed ? `<button class="tc-step-advance-btn" title="Concluir: ${currentLabel}">▶</button>` : ''}
         <button class="tc-expand-btn" title="Ver etapas">▾</button>
-        <button class="tc-arrow move-next" title="Próximo dia">→</button>
+        ${!task.completed ? '<button class="tc-arrow move-next" title="Próximo dia">→</button>' : ''}
       </div>
       <div class="tc-steps-list" hidden>
         ${steps.map((s, i) => {
@@ -239,18 +242,16 @@ function createTaskElement(task, idx) {
       </div>
     `
 
-    const tcRow = div.querySelector('.tc-row')
-    if (!task.completed) {
-      tcRow.addEventListener('click', e => {
-        if (e.target.closest('.tc-arrow, .tc-expand-btn')) return
-        advanceStep(task)
-      })
-    } else {
-      tcRow.addEventListener('click', e => {
-        if (e.target.closest('.tc-arrow, .tc-expand-btn')) return
-        openTaskModal(task)
-      })
-    }
+    // Clicking the row opens the modal; ▶ button advances the step
+    div.querySelector('.tc-row').addEventListener('click', e => {
+      if (e.target.closest('.tc-arrow, .tc-expand-btn, .tc-step-advance-btn')) return
+      openTaskModal(task)
+    })
+
+    div.querySelector('.tc-step-advance-btn')?.addEventListener('click', e => {
+      e.stopPropagation()
+      advanceStep(task)
+    })
 
     div.querySelector('.tc-expand-btn').addEventListener('click', e => {
       e.stopPropagation()
