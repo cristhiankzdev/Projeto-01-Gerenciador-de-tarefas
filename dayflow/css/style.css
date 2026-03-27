@@ -252,7 +252,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(253, 248, 242, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   display: flex;
@@ -326,7 +326,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   align-items: center;
   gap: 10px;
   padding: 10px 24px;
-  background: linear-gradient(90deg, #FFF5E8, var(--bg));
+  background: linear-gradient(90deg, #ECEEF2, var(--bg));
   border-bottom: 1px solid var(--border);
   font-size: 13px;
   color: var(--text-soft);
@@ -380,7 +380,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 
 .day-column.today {
   border-color: var(--primary);
-  background: linear-gradient(180deg, #FFF8F0 0%, var(--card) 80%);
+  background: linear-gradient(180deg, #F0F4FF 0%, var(--card) 80%);
   box-shadow: 0 0 0 3px var(--primary-light);
 }
 
@@ -543,6 +543,75 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 }
 .check-btn.checked svg { stroke: white; }
 .check-btn.checked .check-path { stroke-dashoffset: 0; stroke: white; }
+
+/* ── Drag & drop ─────────────────────────────────────────────────────────── */
+.task-card[draggable="true"] { cursor: grab; }
+.task-card.dragging { opacity: 0.35; cursor: grabbing; transform: scale(0.97); }
+.day-column.drag-over {
+  background: #EEF2FF !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px var(--primary-light);
+}
+.task-list.drag-over-list { min-height: 48px; }
+
+/* ── Inline category form (inside task modal) ────────────────────────────── */
+.cat-select-row { display: flex; gap: 6px; align-items: center; }
+.cat-select-row select { flex: 1; }
+.add-cat-inline-btn {
+  flex-shrink: 0;
+  height: 36px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  border-radius: 8px;
+  background: var(--primary-light);
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.add-cat-inline-btn:hover { background: var(--primary); color: white; }
+
+.cat-inline-form {
+  margin-top: 10px;
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cat-inline-form input {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  width: 100%;
+}
+.cat-inline-form input:focus { border-color: var(--primary); }
+.cat-inline-emoji-row { display: flex; gap: 4px; flex-wrap: wrap; }
+.cat-inline-emoji-btn {
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+  border: 1.5px solid transparent;
+}
+.cat-inline-emoji-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+.cat-inline-color-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.cat-inline-color-btn {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  transition: var(--transition);
+}
+.cat-inline-color-btn.selected { border-color: var(--text); transform: scale(1.15); }
+.cat-inline-actions { display: flex; gap: 8px; justify-content: flex-end; }
 
 /* ── Nav arrows (always visible, discrete) ───────────────────────────────── */
 .task-nav {

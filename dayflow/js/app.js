@@ -137,6 +137,29 @@ function renderGrid() {
   grid.querySelectorAll('.add-task-btn').forEach(btn => {
     btn.addEventListener('click', () => openTaskModal(null, btn.dataset.date))
   })
+
+  // Drag & drop — drop zones
+  grid.querySelectorAll('.day-column').forEach(col => {
+    const list = col.querySelector('.task-list')
+    col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over') })
+    col.addEventListener('dragleave', e => {
+      if (!col.contains(e.relatedTarget)) col.classList.remove('drag-over')
+    })
+    col.addEventListener('drop', async e => {
+      e.preventDefault()
+      col.classList.remove('drag-over')
+      const taskId = e.dataTransfer.getData('taskId')
+      const newDate = col.dataset.date
+      if (!taskId) return
+      const task = tasks.find(t => t.id === taskId)
+      if (!task || task.date === newDate) return
+      const updated = await updateTask(taskId, { date: newDate })
+      const i = tasks.findIndex(t => t.id === taskId)
+      if (i !== -1) tasks[i] = updated
+      renderTasksInGrid()
+      showToast(`Tarefa movida para ${DAY_NAMES[new Date(newDate + 'T12:00:00').getDay()]}`)
+    })
+  })
 }
 
 // ── Tasks loading ─────────────────────────────────────────────────────────────
@@ -281,6 +304,14 @@ function createTaskElement(task, idx) {
   div.querySelector('.move-prev').addEventListener('click', e => { e.stopPropagation(); moveTaskDay(task, -1) })
   div.querySelector('.move-next').addEventListener('click', e => { e.stopPropagation(); moveTaskDay(task, 1) })
 
+  // Drag & drop
+  div.draggable = true
+  div.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('taskId', task.id)
+    div.classList.add('dragging')
+  })
+  div.addEventListener('dragend', () => div.classList.remove('dragging'))
+
   return div
 }
 
@@ -400,6 +431,76 @@ function initTaskModal() {
 
   document.getElementById('save-task-btn').addEventListener('click', saveTask)
   document.getElementById('delete-task-btn').addEventListener('click', () => confirmDeleteTask(editingTask))
+
+  // Inline category creation
+  document.getElementById('add-cat-inline-btn').addEventListener('click', () => {
+    const form = document.getElementById('cat-inline-form')
+    form.style.display = form.style.display === 'none' ? 'flex' : 'none'
+    if (form.style.display === 'flex') renderInlineCatForm()
+  })
+}
+
+// ── Inline category form ───────────────────────────────────────────────────────
+const INLINE_EMOJIS = ['💼','🏠','❤️','📚','🎯','🎨','🏋️','🍕','✈️','🎮','💰','🌱']
+const INLINE_COLORS = ['#4A7FC1','#7D9B76','#D95F5F','#8B6FBA','#C17E4A','#E8A838','#E87BB0','#5BB8D4']
+
+function renderInlineCatForm() {
+  const form = document.getElementById('cat-inline-form')
+  let selEmoji = INLINE_EMOJIS[0]
+  let selColor = INLINE_COLORS[0]
+
+  form.innerHTML = `
+    <input type="text" id="cat-inline-name" placeholder="Nome da categoria" maxlength="30">
+    <div class="cat-inline-emoji-row">
+      ${INLINE_EMOJIS.map(e => `<button type="button" class="cat-inline-emoji-btn${e === selEmoji ? ' selected' : ''}" data-emoji="${e}">${e}</button>`).join('')}
+    </div>
+    <div class="cat-inline-color-row">
+      ${INLINE_COLORS.map(c => `<button type="button" class="cat-inline-color-btn${c === selColor ? ' selected' : ''}" data-color="${c}" style="background:${c}"></button>`).join('')}
+    </div>
+    <div class="cat-inline-actions">
+      <button type="button" class="btn-secondary" id="cat-inline-cancel" style="padding:6px 12px;font-size:13px">Cancelar</button>
+      <button type="button" class="btn-primary" id="cat-inline-save" style="padding:6px 14px;font-size:13px">Salvar</button>
+    </div>
+  `
+
+  form.querySelectorAll('.cat-inline-emoji-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      form.querySelectorAll('.cat-inline-emoji-btn').forEach(b => b.classList.remove('selected'))
+      btn.classList.add('selected')
+      selEmoji = btn.dataset.emoji
+    })
+  })
+  form.querySelectorAll('.cat-inline-color-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      form.querySelectorAll('.cat-inline-color-btn').forEach(b => b.classList.remove('selected'))
+      btn.classList.add('selected')
+      selColor = btn.dataset.color
+    })
+  })
+
+  form.querySelector('#cat-inline-cancel').addEventListener('click', () => {
+    form.style.display = 'none'
+  })
+
+  form.querySelector('#cat-inline-save').addEventListener('click', async () => {
+    const name = document.getElementById('cat-inline-name').value.trim()
+    if (!name) { document.getElementById('cat-inline-name').focus(); return }
+    const { createCategory } = await import('./db.js')
+    const newCat = await createCategory({ user_id: currentUser.id, name, emoji: selEmoji, color: selColor })
+    categories.push(newCat)
+    renderCategoryPills()
+    // Rebuild select and select new cat
+    const catSelect = document.getElementById('task-category')
+    const opt = document.createElement('option')
+    opt.value = newCat.id
+    opt.textContent = `${newCat.emoji} ${newCat.name}`
+    catSelect.appendChild(opt)
+    catSelect.value = newCat.id
+    form.style.display = 'none'
+    showToast(`Categoria "${name}" criada!`)
+  })
+
+  document.getElementById('cat-inline-name').focus()
 }
 
 function addStep() {
