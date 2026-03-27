@@ -578,6 +578,22 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 }
 .tc-prog-label { font-size: 10px; color: var(--text-soft); white-space: nowrap; }
 
+/* step advance button */
+.tc-step-advance-btn {
+  font-size: 10px;
+  color: white;
+  background: var(--secondary);
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+.tc-step-advance-btn:hover { background: #6a8a63; transform: scale(1.1); }
+
 /* expandable steps list below card */
 .tc-expand-btn {
   font-size: 11px;
