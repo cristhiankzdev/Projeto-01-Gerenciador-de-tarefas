@@ -242,6 +242,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   color: var(--text-soft);
 }
 .icon-btn:hover { background: var(--border); color: var(--text); }
+.icon-btn svg { width: 16px; height: 16px; stroke-width: 2; }
 
 .link-btn {
   font-size: 13px;
