@@ -462,7 +462,8 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 .task-card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-left: 3px solid var(--task-cat-color, var(--border));
+  border-radius: 4px 8px 8px 4px;
   padding: 3px 5px;
   display: block;
   cursor: pointer;
