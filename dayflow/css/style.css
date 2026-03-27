@@ -34,7 +34,7 @@ a { color: var(--primary); }
 ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
 /* ── Typography ───────────────────────────────────────────────────────────── */
-h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
+h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 /* AUTH PAGE                                                                    */
