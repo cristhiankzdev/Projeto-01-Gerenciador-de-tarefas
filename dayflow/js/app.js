@@ -86,6 +86,7 @@ async function init() {
   archiveModal.addEventListener('click', e => { if (e.target === archiveModal) archiveModal.classList.remove('open') })
   initTaskModal()
   initSettingsModal()
+  if (typeof lucide !== 'undefined') lucide.createIcons()
 }
 
 // ── Daily tip ─────────────────────────────────────────────────────────────────
