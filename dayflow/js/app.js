@@ -307,7 +307,6 @@ function createTaskElement(task, idx) {
   } else {
     div.innerHTML = `
       <div class="tc-row">
-        <span class="tc-emoji">${emoji}</span>
         <span class="tc-title${task.completed ? ' done' : ''}">${task.title}</span>
         <span class="tc-dot ${dotClass}"></span>
         ${task.completed ? '<button class="tc-archive-btn" title="Arquivar">📦</button>' : ''}
