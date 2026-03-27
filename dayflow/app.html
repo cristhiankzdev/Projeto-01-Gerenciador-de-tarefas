@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DayFlow — Tarefas Diárias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=DM+Sans:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <header class="app-header">
+    <div class="header-logo">
+      <span class="logo-icon">🌸</span>
+      <span class="logo-text">DayFlow</span>
+    </div>
+    <nav class="header-center" id="category-pills" aria-label="Filtro por categoria"></nav>
+    <div class="header-right">
+      <span class="user-greeting">Olá, <strong id="user-name">...</strong></span>
+      <button id="settings-btn" class="icon-btn" title="Gerenciar categorias" aria-label="Gerenciar categorias">⚙️</button>
+      <button id="logout-btn" class="icon-btn" title="Sair" aria-label="Sair">↪️</button>
+    </div>
+  </header>
+
+  <!-- ── Dica do Dia ─────────────────────────────────────────────────────── -->
+  <div class="tip-bar" role="note">
+    <span class="tip-icon" aria-hidden="true">💡</span>
+    <span id="daily-tip-text"></span>
+  </div>
+
+  <!-- ── Main ────────────────────────────────────────────────────────────── -->
+  <main class="app-main">
+
+    <!-- 7-Day Grid -->
+    <div class="grid-wrapper" role="region" aria-label="Grade de 7 dias">
+      <div class="day-grid" id="day-grid"></div>
+    </div>
+
+    <!-- Notes Panel -->
+    <aside class="notes-panel" aria-label="Notas rápidas">
+      <div class="notes-header">
+        <span>📝 Notas Rápidas</span>
+        <span id="notes-saved" class="save-indicator" aria-live="polite">💾 Salvo</span>
+      </div>
+      <textarea
+        id="notes-textarea"
+        class="notes-area"
+        placeholder="Escreva aqui suas anotações, ideias ou lembretes..."
+        aria-label="Notas rápidas"
+      ></textarea>
+    </aside>
+
+  </main>
+
+  <!-- ── Task Modal ──────────────────────────────────────────────────────── -->
+  <div id="task-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-title">Nova Tarefa</h3>
+        <button id="close-task-modal" class="close-btn" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group">
+          <label for="task-title-input">Título *</label>
+          <input type="text" id="task-title-input" placeholder="O que precisa ser feito?" maxlength="120">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="task-category">Categoria</label>
+            <select id="task-category"></select>
+          </div>
+          <div class="form-group">
+            <label for="task-priority">Prioridade</label>
+            <select id="task-priority">
+              <option value="alta">🔴 Alta</option>
+              <option value="media" selected>🟡 Média</option>
+              <option value="baixa">🟢 Baixa</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group type-toggle-row">
+          <label>Tipo</label>
+          <div class="toggle-group">
+            <span>Simples</span>
+            <label class="toggle-switch" aria-label="Tarefa em etapas">
+              <input type="checkbox" id="task-type-toggle">
+              <span class="toggle-track"></span>
+            </label>
+            <span>Em etapas</span>
+          </div>
+        </div>
+
+        <div id="steps-section" style="display:none">
+          <div class="form-group">
+            <label>Etapas <span style="font-weight:400;color:var(--text-soft)">(mínimo 2)</span></label>
+            <div class="step-input-row">
+              <input type="text" id="step-input" placeholder="Descreva uma etapa..." maxlength="100">
+              <button type="button" id="add-step-btn" class="btn-secondary" aria-label="Adicionar etapa">＋</button>
+            </div>
+            <div id="steps-list" class="steps-list"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="task-notes">Notas <span style="font-weight:400;color:var(--text-soft)">(opcional)</span></label>
+          <textarea id="task-notes" placeholder="Detalhes, links, observações..." rows="3" maxlength="500"></textarea>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button id="delete-task-btn" class="btn-danger" style="display:none" aria-label="Excluir tarefa">🗑️ Excluir</button>
+        <div class="modal-actions">
+          <button id="cancel-task-btn" class="btn-secondary">Cancelar</button>
+          <button id="save-task-btn" class="btn-primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Categories Modal ────────────────────────────────────────────────── -->
+  <div id="categories-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cat-modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="cat-modal-title">Gerenciar Categorias</h3>
+        <button id="close-categories-modal" class="close-btn" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="categories-list"></div>
+        <button id="add-category-btn" class="btn-secondary" style="margin-top:8px;width:100%">
+          ＋ Nova categoria
+        </button>
+        <div id="category-form" style="display:none;margin-top:16px;padding:16px;background:var(--bg);border-radius:12px;border:1px solid var(--border)"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Confetti Canvas ─────────────────────────────────────────────────── -->
+  <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;pointer-events:none;z-index:9999;display:none" aria-hidden="true"></canvas>
+
+  <!-- ── Toast Container ────────────────────────────────────────────────── -->
+  <div id="toast-container" class="toast-container" role="status" aria-live="polite"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
