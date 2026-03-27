@@ -46,9 +46,9 @@ function localDateStr(date) {
 function getGridDates() {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  return Array.from({ length: 7 }, (_, i) => {
+  return Array.from({ length: 5 }, (_, i) => {
     const d = new Date(today)
-    d.setDate(today.getDate() + i - 3)
+    d.setDate(today.getDate() + i - 2)
     return d
   })
 }
