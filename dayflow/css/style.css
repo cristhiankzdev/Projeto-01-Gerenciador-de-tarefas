@@ -271,7 +271,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 12px 24px;
+  padding: 10px 20px;
 }
 
 .header-logo {
