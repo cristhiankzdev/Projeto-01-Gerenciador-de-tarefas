@@ -278,12 +278,20 @@ function createTaskElement(task, idx) {
     })
 
     div.querySelector('.tc-row').addEventListener('click', e => {
-      if (e.target.closest('.check-btn, .tc-arrow')) return
+      if (e.target.closest('.check-btn, .tc-arrow, .tc-archive-btn')) return
       openTaskModal(task)
+    })
+
+    div.querySelector('.tc-archive-btn')?.addEventListener('click', async e => {
+      e.stopPropagation()
+      await archiveTask(task.id)
+      tasks = tasks.filter(t => t.id !== task.id)
+      renderTasksInGrid()
+      showToast('Tarefa arquivada')
     })
   }
 
-  div.querySelector('.move-next').addEventListener('click', e => { e.stopPropagation(); moveTaskDay(task, 1) })
+  div.querySelector('.move-next')?.addEventListener('click', e => { e.stopPropagation(); moveTaskDay(task, 1) })
 
   // Drag & drop
   div.draggable = true
