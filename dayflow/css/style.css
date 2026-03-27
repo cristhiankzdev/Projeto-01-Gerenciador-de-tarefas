@@ -282,7 +282,7 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
 }
 .header-logo .logo-icon { font-size: 20px; }
 .header-logo .logo-text {
-  font-family: 'Fraunces', serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 15px;
   font-weight: 700;
   color: var(--text);
