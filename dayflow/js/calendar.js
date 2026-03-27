@@ -10,10 +10,34 @@ let viewMonth = null
 let events = {}   // { 'YYYY-MM-DD': { color, description } }
 let activePopup = null
 
+function localDate(date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+// Returns the first and last Date shown in the calendar grid (including overflow days)
+function gridBounds(year, month) {
+  const firstOfMonth = new Date(year, month - 1, 1)
+  const lastOfMonth  = new Date(year, month, 0)
+  const startOffset  = firstOfMonth.getDay()                    // days from prev month
+  const endOffset    = (6 - lastOfMonth.getDay()) % 7 === 0     // days from next month
+    ? 0 : 6 - lastOfMonth.getDay()
+
+  const start = new Date(firstOfMonth)
+  start.setDate(start.getDate() - startOffset)
+
+  const end = new Date(lastOfMonth)
+  end.setDate(end.getDate() + endOffset)
+
+  return { start, end }
+}
+
 export function initCalendar(uid) {
   userId = uid
   const now = new Date()
-  viewYear = now.getFullYear()
+  viewYear  = now.getFullYear()
   viewMonth = now.getMonth() + 1
   loadAndRender()
 
@@ -38,8 +62,11 @@ export function initCalendar(uid) {
 async function loadAndRender() {
   document.getElementById('cal-month-label').textContent =
     `${MONTHS[viewMonth - 1]} de ${viewYear}`
+
+  const { start, end } = gridBounds(viewYear, viewMonth)
+
   try {
-    const list = await getEvents(userId, viewYear, viewMonth)
+    const list = await getEvents(userId, localDate(start), localDate(end))
     events = {}
     list.forEach(e => {
       events[e.date] = { color: e.color || '#4A7FC1', description: e.description || '' }
@@ -62,60 +89,62 @@ function renderGrid() {
     grid.appendChild(h)
   })
 
-  const firstDay  = new Date(viewYear, viewMonth - 1, 1).getDay()
-  const daysInMonth  = new Date(viewYear, viewMonth, 0).getDate()
-  const prevDays  = new Date(viewYear, viewMonth - 1, 0).getDate()
-  const today = new Date()
+  const firstOfMonth = new Date(viewYear, viewMonth - 1, 1)
+  const lastOfMonth  = new Date(viewYear, viewMonth, 0)
+  const prevDays     = new Date(viewYear, viewMonth - 1, 0).getDate()
+  const startOffset  = firstOfMonth.getDay()
+  const endOffset    = (6 - lastOfMonth.getDay()) % 7 === 0 ? 0 : 6 - lastOfMonth.getDay()
+  const today        = new Date()
 
-  // Previous month trailing days
-  for (let i = firstDay - 1; i >= 0; i--) {
-    const cell = document.createElement('div')
-    cell.className = 'cal-day cal-other-month'
-    cell.textContent = prevDays - i
-    grid.appendChild(cell)
+  // Previous month overflow
+  for (let i = startOffset - 1; i >= 0; i--) {
+    const day = prevDays - i
+    const d = new Date(viewYear, viewMonth - 2, day)
+    grid.appendChild(makeDayCell(day, localDate(d), true))
   }
 
   // Current month
-  for (let d = 1; d <= daysInMonth; d++) {
-    const dateStr = `${viewYear}-${String(viewMonth).padStart(2,'0')}-${String(d).padStart(2,'0')}`
-    const cell = document.createElement('button')
-    cell.className = 'cal-day'
-    cell.dataset.date = dateStr
-
-    const inner = document.createElement('span')
-    inner.className = 'cal-day-inner'
-    inner.textContent = d
-    cell.appendChild(inner)
-
+  for (let d = 1; d <= lastOfMonth.getDate(); d++) {
+    const dt = new Date(viewYear, viewMonth - 1, d)
+    const dateStr = localDate(dt)
     const isToday = today.getFullYear() === viewYear &&
                     today.getMonth() + 1 === viewMonth &&
                     today.getDate() === d
-    if (isToday) cell.classList.add('cal-today')
-
-    const ev = events[dateStr]
-    if (ev) {
-      cell.classList.add('cal-marked')
-      inner.style.background = ev.color
-      if (ev.description) cell.title = ev.description
-    }
-
-    cell.addEventListener('click', e => {
-      e.stopPropagation()
-      openPopup(cell, dateStr)
-    })
-
-    grid.appendChild(cell)
+    grid.appendChild(makeDayCell(d, dateStr, false, isToday))
   }
 
-  // Next month leading days
-  const total = firstDay + daysInMonth
-  const remaining = total % 7 === 0 ? 0 : 7 - (total % 7)
-  for (let d = 1; d <= remaining; d++) {
-    const cell = document.createElement('div')
-    cell.className = 'cal-day cal-other-month'
-    cell.textContent = d
-    grid.appendChild(cell)
+  // Next month overflow
+  for (let d = 1; d <= endOffset; d++) {
+    const dt = new Date(viewYear, viewMonth, d)
+    grid.appendChild(makeDayCell(d, localDate(dt), true))
   }
+}
+
+function makeDayCell(dayNum, dateStr, otherMonth, isToday = false) {
+  const cell = document.createElement('button')
+  cell.className = 'cal-day' + (otherMonth ? ' cal-other-month' : '')
+  cell.dataset.date = dateStr
+
+  const inner = document.createElement('span')
+  inner.className = 'cal-day-inner'
+  inner.textContent = dayNum
+  cell.appendChild(inner)
+
+  if (isToday) cell.classList.add('cal-today')
+
+  const ev = events[dateStr]
+  if (ev) {
+    cell.classList.add('cal-marked')
+    inner.style.background = ev.color
+    if (ev.description) cell.title = ev.description
+  }
+
+  cell.addEventListener('click', e => {
+    e.stopPropagation()
+    openPopup(cell, dateStr)
+  })
+
+  return cell
 }
 
 function openPopup(cell, dateStr) {
@@ -128,7 +157,7 @@ function openPopup(cell, dateStr) {
     <input type="text" class="cal-popup-input" placeholder="O que acontece nesse dia?" value="${ev.description}" maxlength="60">
     <div class="cal-popup-colors">
       ${EVENT_COLORS.map(c =>
-        `<button class="cal-color-btn${ev.color === c ? ' selected' : ''}" data-color="${c}" style="background:${c}" title="${c}"></button>`
+        `<button class="cal-color-btn${ev.color === c ? ' selected' : ''}" data-color="${c}" style="background:${c}"></button>`
       ).join('')}
     </div>
     <div class="cal-popup-actions">
@@ -165,7 +194,6 @@ function openPopup(cell, dateStr) {
     renderGrid()
   })
 
-  // Append to body and position with fixed coords to avoid clipping
   document.body.appendChild(popup)
   activePopup = popup
 
@@ -174,7 +202,6 @@ function openPopup(cell, dateStr) {
   let left = rect.left + rect.width / 2 - popupW / 2
   left = Math.max(8, Math.min(left, window.innerWidth - popupW - 8))
 
-  // Show above if there's not enough space below
   const spaceBelow = window.innerHeight - rect.bottom
   if (spaceBelow < 180) {
     popup.style.bottom = (window.innerHeight - rect.top + 6) + 'px'
