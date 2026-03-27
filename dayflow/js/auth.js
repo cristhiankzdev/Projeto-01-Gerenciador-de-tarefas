@@ -68,6 +68,20 @@ if (loginForm) {
     if (session) window.location.href = 'app.html'
   })
 
+  // Google OAuth
+  document.getElementById('google-btn').addEventListener('click', async () => {
+    const btn = document.getElementById('google-btn')
+    btn.disabled = true
+    btn.textContent = 'Aguarde...'
+    try {
+      await signInWithGoogle()
+    } catch (err) {
+      btn.disabled = false
+      btn.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" height="18" alt=""> Continuar com Google'
+      document.getElementById('login-error').textContent = err.message
+    }
+  })
+
   // Login
   loginForm.addEventListener('submit', async e => {
     e.preventDefault()
