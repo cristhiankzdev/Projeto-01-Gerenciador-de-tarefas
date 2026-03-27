@@ -360,7 +360,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 
 .day-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(145px, 1fr)) minmax(200px, 1.6fr) repeat(3, minmax(145px, 1fr));
+  grid-template-columns: repeat(2, minmax(145px, 1fr)) minmax(210px, 1.7fr) repeat(2, minmax(145px, 1fr));
   gap: 12px;
   min-width: 0;
 }
