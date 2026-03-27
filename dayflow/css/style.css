@@ -506,7 +506,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 .tc-arrow:hover { opacity: 1 !important; background: var(--bg); color: var(--primary); }
 
 /* emoji */
-.tc-emoji { font-size: 13px; flex-shrink: 0; width: 16px; text-align: center; }
+.tc-emoji { font-size: 13px; flex-shrink: 0; width: 18px; text-align: center; }
 
 /* title */
 .tc-title {
