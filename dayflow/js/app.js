@@ -366,11 +366,10 @@ async function toggleComplete(task, btn) {
   renderTasksInGrid()
 }
 
-// ── Advance step ──────────────────────────────────────────────────────────────
-async function advanceStep(task) {
+// ── Set step index ─────────────────────────────────────────────────────────────
+async function setStepIndex(task, newCurrentStep) {
   const steps = task.steps ?? []
-  const nextStep = (task.current_step ?? 0) + 1
-  const isComplete = nextStep >= steps.length
+  const isComplete = newCurrentStep >= steps.length
 
   const cardEl = document.querySelector(`.task-card[data-id="${task.id}"]`)
   cardEl?.classList.add('step-advance')
@@ -385,13 +384,18 @@ async function advanceStep(task) {
   }
 
   const updated = await updateTask(task.id, {
-    current_step: nextStep,
+    current_step: Math.max(0, newCurrentStep),
     completed: isComplete,
     completed_at: isComplete ? new Date().toISOString() : null,
   })
   const i = tasks.findIndex(t => t.id === task.id)
   if (i !== -1) tasks[i] = updated
   renderTasksInGrid()
+}
+
+// ── Advance step ──────────────────────────────────────────────────────────────
+async function advanceStep(task) {
+  return setStepIndex(task, (task.current_step ?? 0) + 1)
 }
 
 // ── Move task ─────────────────────────────────────────────────────────────────
