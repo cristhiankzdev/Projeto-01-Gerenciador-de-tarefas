@@ -123,8 +123,8 @@ function renderGrid() {
   const dates = getGridDates()
   const grid = document.getElementById('day-grid')
   grid.innerHTML = dates.map((date, i) => {
-    const isToday = i === 3
-    const isPast = i < 3
+    const isToday = i === 2
+    const isPast = i < 2
     const dateStr = localDateStr(date)
     return `
       <div class="day-column${isToday ? ' today' : ''}${isPast ? ' past' : ''}" data-date="${dateStr}">
