@@ -185,20 +185,58 @@ function renderTasksInGrid() {
     ? tasks
     : tasks.filter(t => t.category_id === activeCategoryFilter)
 
-  // Group by date to get stagger index
+  // Group by date
   const byDate = {}
   filtered.forEach(task => {
     if (!byDate[task.date]) byDate[task.date] = []
     byDate[task.date].push(task)
   })
 
-  Object.values(byDate).forEach(group => {
-    group.forEach((task, idx) => {
-      const container = document.getElementById(`tasks-${task.date}`)
-      if (!container) return
-      container.appendChild(createTaskElement(task, idx))
+  Object.entries(byDate).forEach(([date, dateTasks]) => {
+    const container = document.getElementById(`tasks-${date}`)
+    if (!container) return
+
+    if (activeCategoryFilter !== 'all') {
+      // Single category filter: flat list
+      dateTasks.forEach((task, idx) => container.appendChild(createTaskElement(task, idx)))
+      return
+    }
+
+    // Group by category, then simple before steps within each group
+    const catGroups = {}
+    const catKeys = []
+    dateTasks.forEach(task => {
+      const key = task.category_id ?? '__none__'
+      if (!catGroups[key]) { catGroups[key] = { simple: [], steps: [] }; catKeys.push(key) }
+      if (task.type === 'steps') catGroups[key].steps.push(task)
+      else catGroups[key].simple.push(task)
+    })
+
+    const multiCat = catKeys.length > 1
+    let idx = 0
+
+    catKeys.forEach(key => {
+      const { simple, steps } = catGroups[key]
+
+      if (multiCat) {
+        const cat = key === '__none__' ? null : categories.find(c => c.id === key)
+        const header = document.createElement('div')
+        header.className = 'task-cat-header'
+        if (cat) {
+          header.innerHTML = `<span class="task-cat-dot" style="background:${cat.color}"></span><span>${cat.emoji} ${cat.name}</span>`
+        } else {
+          header.innerHTML = `<span class="task-cat-dot"></span><span style="opacity:0.5">Sem categoria</span>`
+        }
+        container.appendChild(header)
+      }
+
+      ;[...simple, ...steps].forEach(task => {
+        container.appendChild(createTaskElement(task, idx++))
+      })
     })
   })
+
+  renderCategoryPills()
 }
 
 // ── Task element ──────────────────────────────────────────────────────────────
