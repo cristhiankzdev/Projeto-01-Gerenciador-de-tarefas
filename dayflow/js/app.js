@@ -81,6 +81,14 @@ async function init() {
   initCalendar(currentUser.id)
 
   document.getElementById('logout-btn').addEventListener('click', signOut)
+
+  const mobileBtn = document.getElementById('mobile-view-btn')
+  if (window.matchMedia('(max-width: 640px)').matches) document.body.classList.add('view-mobile')
+  mobileBtn.addEventListener('click', () => {
+    document.body.classList.toggle('view-mobile')
+    lucide.createIcons()
+  })
+
   document.getElementById('archive-btn').addEventListener('click', openArchiveModal)
   const archiveModal = document.getElementById('archive-modal')
   document.getElementById('close-archive-modal').addEventListener('click', () => archiveModal.classList.remove('open'))
