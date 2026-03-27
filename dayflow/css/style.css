@@ -602,6 +602,34 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 .tc-step-item.pending   { color: var(--text-soft); }
 .tc-step-icon           { font-size: 10px; flex-shrink: 0; font-weight: 700; }
 
+/* archive button — visible only on hover for completed cards */
+.tc-archive-btn {
+  font-size: 12px;
+  opacity: 0;
+  flex-shrink: 0;
+  transition: opacity var(--transition);
+  padding: 0 2px;
+  line-height: 1;
+}
+.task-card.completed:hover .tc-archive-btn { opacity: 0.6; }
+.tc-archive-btn:hover { opacity: 1 !important; }
+
+/* ── Archive modal list ──────────────────────────────────────────────────── */
+.archive-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 4px;
+  border-bottom: 1px solid var(--border);
+}
+.archive-item:last-child { border-bottom: none; }
+.archive-emoji { font-size: 16px; flex-shrink: 0; }
+.archive-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.archive-title { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: line-through; opacity: 0.7; }
+.archive-date { font-size: 11px; color: var(--text-soft); }
+.archive-delete-btn { font-size: 15px; opacity: 0.4; flex-shrink: 0; transition: opacity var(--transition); padding: 4px; }
+.archive-delete-btn:hover { opacity: 1; }
+
 /* ── Drag & drop ─────────────────────────────────────────────────────────── */
 .task-card[draggable="true"] { cursor: grab; }
 .task-card.dragging { opacity: 0.35; cursor: grabbing; transform: scale(0.97); }
