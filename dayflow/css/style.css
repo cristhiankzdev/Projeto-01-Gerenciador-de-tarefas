@@ -393,8 +393,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 
 .day-column.today {
   border-color: var(--primary);
-  background: linear-gradient(180deg, #F0F4FF 0%, var(--card) 80%);
-  box-shadow: 0 0 0 3px var(--primary-light);
+  background: var(--card);
 }
 
 .day-column.past .day-header { opacity: 0.72; }
