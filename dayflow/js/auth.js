@@ -22,6 +22,14 @@ export async function signOut() {
   window.location.href = 'index.html'
 }
 
+export async function signInWithGoogle() {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/dayflow/app.html' }
+  })
+  if (error) throw new Error('Erro ao conectar com Google. Tente novamente.')
+}
+
 export async function resetPassword(email) {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: window.location.origin + '/app.html',
