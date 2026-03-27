@@ -104,11 +104,13 @@ async function loadCategories() {
 
 function renderCategoryPills() {
   const container = document.getElementById('category-pills')
+  const totalCount = tasks.length
   container.innerHTML = [
-    `<button class="pill${activeCategoryFilter === 'all' ? ' active' : ''}" data-cat="all">Todas</button>`,
-    ...categories.map(c =>
-      `<button class="pill${activeCategoryFilter === c.id ? ' active' : ''}" data-cat="${c.id}" style="--cat-color:${c.color}">${c.emoji} ${c.name}</button>`
-    ),
+    `<button class="pill${activeCategoryFilter === 'all' ? ' active' : ''}" data-cat="all">Todas <span class="pill-count">${totalCount}</span></button>`,
+    ...categories.map(c => {
+      const count = tasks.filter(t => t.category_id === c.id).length
+      return `<button class="pill${activeCategoryFilter === c.id ? ' active' : ''}" data-cat="${c.id}" style="--cat-color:${c.color}">${c.emoji} ${c.name} <span class="pill-count">${count}</span></button>`
+    }),
   ].join('')
 
   container.querySelectorAll('.pill').forEach(btn => {
