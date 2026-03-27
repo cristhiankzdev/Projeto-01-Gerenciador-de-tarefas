@@ -1084,26 +1084,18 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 
 /* ── Calendar event popup ───────────────────────────────────────────────── */
 .cal-event-popup {
-  position: absolute;
-  z-index: 300;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
+  position: fixed;
+  z-index: 9999;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
   width: 210px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   cursor: default;
-}
-/* flip popup if too close to top */
-.cal-day:nth-child(-n+14) .cal-event-popup {
-  bottom: auto;
-  top: calc(100% + 8px);
 }
 
 .cal-popup-input {
