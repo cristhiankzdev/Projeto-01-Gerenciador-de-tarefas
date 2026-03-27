@@ -141,6 +141,28 @@
     </div>
   </div>
 
+  <!-- ── Settings Modal ──────────────────────────────────────────────────── -->
+  <div id="settings-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="settings-modal-title">Configurações</h3>
+        <button id="close-settings-modal" class="close-btn" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="settings-name-input">Nome de exibição</label>
+          <input type="text" id="settings-name-input" placeholder="Seu nome" maxlength="60">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="modal-actions">
+          <button id="cancel-settings-btn" class="btn-secondary">Cancelar</button>
+          <button id="save-settings-btn" class="btn-primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── Categories Modal ────────────────────────────────────────────────── -->
   <div id="categories-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cat-modal-title">
     <div class="modal-box">
