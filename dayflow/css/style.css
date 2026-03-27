@@ -190,7 +190,7 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
   justify-content: center;
   gap: 8px;
 }
-.btn-primary:hover { background: #a96c3a; transform: translateY(-1px); }
+.btn-primary:hover { background: #2e4a6a; transform: translateY(-1px); }
 .btn-primary:active { transform: translateY(0); }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
