@@ -524,16 +524,17 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
 .tc-title.done { text-decoration: line-through; opacity: 0.5; }
 
 /* priority dot */
-.tc-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
+.tc-priority {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   flex-shrink: 0;
-  opacity: 0.75;
+  opacity: 0.85;
 }
-.tc-dot.p-alta   { background: var(--high); }
-.tc-dot.p-media  { background: var(--medium); }
-.tc-dot.p-baixa  { background: var(--low); }
+.tc-priority.p-alta  { color: var(--high); }
+.tc-priority.p-media { color: var(--medium); }
+.tc-priority.p-baixa { color: var(--low); }
 
 /* check button — compact */
 .check-btn {
