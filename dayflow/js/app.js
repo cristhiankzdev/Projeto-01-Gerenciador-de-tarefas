@@ -212,12 +212,17 @@ function renderTasksInGrid() {
     ? tasks
     : tasks.filter(t => t.category_id === activeCategoryFilter)
 
+  const priorityOrder = { alta: 0, media: 1, baixa: 2 }
+
   // Group by date
   const byDate = {}
   filtered.forEach(task => {
     if (!byDate[task.date]) byDate[task.date] = []
     byDate[task.date].push(task)
   })
+  Object.values(byDate).forEach(arr => arr.sort((a, b) =>
+    (priorityOrder[a.priority] ?? 1) - (priorityOrder[b.priority] ?? 1)
+  ))
 
   Object.entries(byDate).forEach(([date, dateTasks]) => {
     const container = document.getElementById(`tasks-${date}`)
