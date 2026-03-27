@@ -181,11 +181,10 @@ function createTaskElement(task, idx) {
   div.dataset.id = task.id
   div.style.animationDelay = `${idx * 0.05}s`
 
-  const actionButtons = `
-    <div class="task-actions">
-      <button class="action-btn move-prev" title="Mover para dia anterior">←</button>
-      <button class="action-btn move-next" title="Mover para próximo dia">→</button>
-      <button class="action-btn edit-btn" title="Editar">✏️</button>
+  const navButtons = `
+    <div class="task-nav">
+      <button class="nav-arrow move-prev" title="Mover para dia anterior">←</button>
+      <button class="nav-arrow move-next" title="Mover para próximo dia">→</button>
     </div>
   `
 
@@ -223,17 +222,22 @@ function createTaskElement(task, idx) {
             `
           }).join('')}
         </div>
+        <div class="task-footer" style="margin-top:6px">
+          <span class="priority-tag ${priorityClass}">${priorityLabel}</span>
+        </div>
       </div>
-      ${actionButtons}
-      <div class="task-footer">
-        <span class="priority-tag ${priorityClass}">${priorityLabel}</span>
-      </div>
+      ${navButtons}
     `
 
     if (!task.completed) {
       div.querySelector('.task-main').addEventListener('click', e => {
-        if (e.target.closest('.step-expand-toggle, .steps-tooltip')) return
+        if (e.target.closest('.step-expand-toggle, .steps-tooltip, .task-nav')) return
         advanceStep(task)
+      })
+    } else {
+      div.addEventListener('click', e => {
+        if (e.target.closest('.task-nav')) return
+        openTaskModal(task)
       })
     }
 
@@ -260,18 +264,22 @@ function createTaskElement(task, idx) {
           </button>
         </div>
       </div>
-      ${actionButtons}
+      ${navButtons}
     `
 
     div.querySelector('.check-btn').addEventListener('click', e => {
       e.stopPropagation()
       toggleComplete(task, e.currentTarget)
     })
+
+    div.addEventListener('click', e => {
+      if (e.target.closest('.check-btn, .task-nav')) return
+      openTaskModal(task)
+    })
   }
 
   div.querySelector('.move-prev').addEventListener('click', e => { e.stopPropagation(); moveTaskDay(task, -1) })
   div.querySelector('.move-next').addEventListener('click', e => { e.stopPropagation(); moveTaskDay(task, 1) })
-  div.querySelector('.edit-btn').addEventListener('click', e => { e.stopPropagation(); openTaskModal(task) })
 
   return div
 }

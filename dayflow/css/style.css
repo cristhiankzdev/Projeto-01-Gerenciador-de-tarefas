@@ -2,14 +2,14 @@
 
 /* ── Variables ────────────────────────────────────────────────────────────── */
 :root {
-  --bg: #FDF8F2;
+  --bg: #F5F6F8;
   --card: #FFFFFF;
   --primary: #C17E4A;
-  --primary-light: #C17E4A22;
+  --primary-light: #C17E4A18;
   --secondary: #7D9B76;
-  --text: #2C2416;
-  --text-soft: #8C7B6B;
-  --border: #EDE4D8;
+  --text: #1E1E2E;
+  --text-soft: #6B7280;
+  --border: #E5E7EB;
   --high: #D95F5F;
   --medium: #E8A838;
   --low: #7D9B76;
@@ -46,7 +46,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   justify-content: center;
   min-height: 100vh;
   padding: 24px;
-  background: radial-gradient(ellipse at 60% 0%, #f5ede0 0%, var(--bg) 60%);
+  background: radial-gradient(ellipse at 60% 0%, #eef0f5 0%, var(--bg) 60%);
 }
 
 .auth-container { width: 100%; max-width: 420px; }
@@ -360,7 +360,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 
 .day-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(160px, 1fr));
+  grid-template-columns: repeat(3, minmax(145px, 1fr)) minmax(200px, 1.6fr) repeat(3, minmax(145px, 1fr));
   gap: 12px;
   min-width: 0;
 }
@@ -409,7 +409,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 }
 
 .day-name { font-size: 11px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; }
-.day-number { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; }
+.day-number { font-family: 'DM Sans', sans-serif; font-size: 24px; font-weight: 600; color: var(--text); line-height: 1; }
 .day-month { font-size: 11px; color: var(--text-soft); }
 
 .day-column.today .day-number { color: var(--primary); }
@@ -452,7 +452,7 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   border-radius: 12px;
   padding: 10px 12px;
   position: relative;
-  cursor: default;
+  cursor: pointer;
   transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
   animation: slideInUp 0.3s ease both;
 }
@@ -544,33 +544,25 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
 .check-btn.checked svg { stroke: white; }
 .check-btn.checked .check-path { stroke-dashoffset: 0; stroke: white; }
 
-/* ── Hover actions ───────────────────────────────────────────────────────── */
-.task-actions {
-  display: none;
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  gap: 2px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 2px;
-  box-shadow: var(--shadow);
-}
-.task-card:hover .task-actions { display: flex; }
-
-.action-btn {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  font-size: 13px;
-  color: var(--text-soft);
-  transition: var(--transition);
+/* ── Nav arrows (always visible, discrete) ───────────────────────────────── */
+.task-nav {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
 }
-.action-btn:hover { background: var(--bg); color: var(--text); }
+
+.nav-arrow {
+  font-size: 12px;
+  color: var(--text-soft);
+  opacity: 0.45;
+  padding: 2px 8px;
+  border-radius: 5px;
+  transition: var(--transition);
+  line-height: 1.4;
+}
+.nav-arrow:hover { opacity: 1; background: var(--bg); color: var(--primary); }
 
 /* ── Steps card ──────────────────────────────────────────────────────────── */
 .step-info {
