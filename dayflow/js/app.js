@@ -489,8 +489,8 @@ function initTaskModal() {
 }
 
 // ── Inline category form ───────────────────────────────────────────────────────
-const INLINE_EMOJIS = ['💼','🏠','❤️','📚','🎯','🎨','🏋️','🍕','✈️','🎮','💰','🌱']
-const INLINE_COLORS = ['#4A7FC1','#7D9B76','#D95F5F','#8B6FBA','#C17E4A','#E8A838','#E87BB0','#5BB8D4']
+const INLINE_EMOJIS = ['💼','🏠','❤️','📚','🎯','🎨','🏋️','🍕','✈️','🎮','💰','🌱','🎵','🔧','🐾','🌸','⚡','🎁','🏆','🎭','🔬','💡','🌊','🎪','🚀','🏖️','🌙','⭐','🎓','💻','🌍','🏄']
+const INLINE_COLORS = ['#4A7FC1','#7D9B76','#D95F5F','#8B6FBA','#C17E4A','#E8A838','#E87BB0','#5BB8D4','#8BC34A','#FF7043','#78909C','#A1887F','#26A69A','#EF5350','#AB47BC','#7E57C2','#29B6F6','#66BB6A','#FFCA28','#8D6E63','#EC407A','#546E7A']
 
 function renderInlineCatForm() {
   const form = document.getElementById('cat-inline-form')
