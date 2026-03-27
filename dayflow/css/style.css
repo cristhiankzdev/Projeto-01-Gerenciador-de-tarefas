@@ -446,83 +446,86 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Task card — compact single-row layout ───────────────────────────────── */
 .task-card {
   background: var(--card);
   border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 10px 12px;
-  position: relative;
+  border-radius: 8px;
+  padding: 3px 5px;
+  display: block;
   cursor: pointer;
-  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
-  animation: slideInUp 0.3s ease both;
+  transition: border-color var(--transition), box-shadow var(--transition), opacity var(--transition);
+  animation: slideInUp 0.25s ease both;
 }
 
-.task-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
+/* main row inside compact card */
+.tc-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
 }
-
-.task-card.completed {
-  opacity: 0.6;
-  background: var(--bg);
-}
+.task-card:hover { border-color: #c0c8d8; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+.task-card.completed { opacity: 0.5; background: var(--bg); }
 
 @keyframes stepAdvance {
   0%   { transform: scale(1); }
-  40%  { transform: scale(1.03); background: #f0fdf4; }
+  40%  { transform: scale(1.02); background: #f0fdf4; }
   100% { transform: scale(1); }
 }
-.task-card.step-advance { animation: stepAdvance 0.35s ease; }
+.task-card.step-advance { animation: stepAdvance 0.3s ease; }
 
-.task-main { display: flex; flex-direction: column; gap: 6px; }
-.steps-main { cursor: pointer; }
-
-.task-top {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-}
-
-.cat-emoji { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
-
-.task-title {
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--text);
-  word-break: break-word;
-}
-.task-title.strikethrough {
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-
-.task-footer {
+/* arrow buttons — inline, very subtle */
+.tc-arrow {
+  font-size: 11px;
+  color: var(--text-soft);
+  opacity: 0.3;
+  width: 18px;
+  height: 22px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 4px;
+  justify-content: center;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: var(--transition);
 }
+.task-card:hover .tc-arrow { opacity: 0.7; }
+.tc-arrow:hover { opacity: 1 !important; background: var(--bg); color: var(--primary); }
 
-/* ── Priority tags ───────────────────────────────────────────────────────── */
-.priority-tag {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 6px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+/* emoji */
+.tc-emoji { font-size: 13px; flex-shrink: 0; width: 16px; text-align: center; }
+
+/* title */
+.tc-title {
+  flex: 1;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
-.priority-high   { background: #FFF0F0; color: var(--high); }
-.priority-medium { background: #FFF8E8; color: var(--medium); }
-.priority-low    { background: #F0F7EE; color: var(--low); }
+.tc-title.done { text-decoration: line-through; opacity: 0.5; }
 
-/* ── Check button ────────────────────────────────────────────────────────── */
+/* priority dot */
+.tc-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+.tc-dot.p-alta   { background: var(--high); }
+.tc-dot.p-media  { background: var(--medium); }
+.tc-dot.p-baixa  { background: var(--low); }
+
+/* check button — compact */
 .check-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  border: 2px solid var(--border);
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border);
   background: var(--card);
   display: flex;
   align-items: center;
@@ -530,19 +533,74 @@ h1, h2, h3, h4 { font-family: 'Fraunces', serif; color: var(--text); }
   flex-shrink: 0;
   transition: border-color var(--transition), background var(--transition);
 }
-.check-btn svg { width: 14px; height: 14px; stroke: transparent; }
+.check-btn svg { width: 11px; height: 11px; stroke: transparent; }
 .check-path {
   stroke-dasharray: 24;
   stroke-dashoffset: 24;
-  transition: stroke-dashoffset 0.35s ease, stroke var(--transition);
+  transition: stroke-dashoffset 0.3s ease, stroke var(--transition);
 }
 .check-btn:hover { border-color: var(--secondary); }
-.check-btn.checked {
-  background: var(--secondary);
-  border-color: var(--secondary);
-}
+.check-btn.checked { background: var(--secondary); border-color: var(--secondary); }
 .check-btn.checked svg { stroke: white; }
 .check-btn.checked .check-path { stroke-dashoffset: 0; stroke: white; }
+
+/* steps progress inline */
+.tc-progress {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.tc-prog-bar {
+  width: 36px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.tc-prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  border-radius: 2px;
+  transition: width 0.35s ease;
+}
+.tc-prog-label { font-size: 10px; color: var(--text-soft); white-space: nowrap; }
+
+/* expandable steps list below card */
+.tc-expand-btn {
+  font-size: 11px;
+  color: var(--text-soft);
+  opacity: 0.5;
+  width: 18px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 4px;
+  transition: var(--transition);
+}
+.tc-expand-btn:hover { opacity: 1; background: var(--bg); }
+
+.tc-steps-list {
+  border-top: 1px solid var(--border);
+  margin-top: 2px;
+  padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tc-step-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  padding: 0 2px;
+}
+.tc-step-item.done      { color: var(--secondary); text-decoration: line-through; opacity: 0.65; }
+.tc-step-item.active-step { color: var(--primary); font-weight: 600; }
+.tc-step-item.pending   { color: var(--text-soft); }
+.tc-step-icon           { font-size: 10px; flex-shrink: 0; font-weight: 700; }
 
 /* ── Drag & drop ─────────────────────────────────────────────────────────── */
 .task-card[draggable="true"] { cursor: grab; }
