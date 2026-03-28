@@ -219,6 +219,23 @@ function renderGrid() {
   })
 }
 
+// ── Auto-advance past incomplete tasks to today ───────────────────────────────
+async function autoAdvancePastTasks() {
+  const today = localDateStr(new Date())
+  const { data: pastTasks } = await import('./supabase.js').then(m =>
+    m.supabase.from('tasks')
+      .select('id')
+      .eq('user_id', currentUser.id)
+      .eq('completed', false)
+      .neq('archived', true)
+      .lt('date', today)
+  )
+  if (!pastTasks?.length) return
+  const ids = pastTasks.map(t => t.id)
+  const { supabase } = await import('./supabase.js')
+  await supabase.from('tasks').update({ date: today }).in('id', ids)
+}
+
 // ── Tasks loading ─────────────────────────────────────────────────────────────
 async function loadAndRenderTasks() {
   const dates = getGridDates()
