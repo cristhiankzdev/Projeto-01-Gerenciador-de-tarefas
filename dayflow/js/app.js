@@ -3,8 +3,6 @@ import { getTasks, createTask, updateTask, deleteTask, getCategories, createCate
 import { launchConfetti } from './confetti.js'
 import { initCategories } from './categories.js'
 import { initCalendar } from './calendar.js'
-import { isGoogleUser, gcalCreate, gcalUpdate, gcalDelete } from './gcal.js'
-
 // ── State ─────────────────────────────────────────────────────────────────────
 let currentUser = null
 let categories = []
@@ -14,7 +12,6 @@ let editingTask = null
 let editingDate = null
 let modalSteps = []
 let notesDebounce = null
-let googleSync = false
 const collapsedCategories = new Set()
 
 const TIPS = [
