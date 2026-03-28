@@ -60,6 +60,17 @@ export async function deleteTask(id) {
   if (error) throw error
 }
 
+export async function advancePastIncompleteTasks(userId, today) {
+  const { error } = await supabase
+    .from('tasks')
+    .update({ date: today })
+    .eq('user_id', userId)
+    .eq('completed', false)
+    .neq('archived', true)
+    .lt('date', today)
+  if (error) throw error
+}
+
 // ── Categories ────────────────────────────────────────────────────────────────
 
 export async function getCategories(userId) {
