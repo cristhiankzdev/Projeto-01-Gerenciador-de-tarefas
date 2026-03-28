@@ -36,8 +36,10 @@ function gridBounds(year, month) {
   return { start, end }
 }
 
-export function initCalendar(uid) {
+export function initCalendar(uid, taskCallback = null, eventsChangeCallback = null) {
   userId = uid
+  onAddTask = taskCallback
+  onEventsChange = eventsChangeCallback
   const now = new Date()
   viewYear  = now.getFullYear()
   viewMonth = now.getMonth() + 1
