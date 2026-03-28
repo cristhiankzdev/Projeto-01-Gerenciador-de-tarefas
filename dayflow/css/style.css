@@ -64,7 +64,7 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
   margin-bottom: 28px;
 }
 
-.auth-logo .logo-icon { font-size: 36px; display: block; margin-bottom: 8px; }
+.auth-logo .logo-icon { display: block; margin: 0 auto 12px; }
 .auth-logo .logo-text {
   font-family: 'DM Sans', sans-serif;
   font-size: 28px;
