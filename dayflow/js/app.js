@@ -189,6 +189,7 @@ function renderGrid() {
           <span class="day-month">${MONTH_NAMES[date.getMonth()]}</span>
         </div>
         <button class="add-task-btn" data-date="${dateStr}" title="Adicionar tarefa">＋</button>
+        <div class="day-events" id="day-events-${dateStr}"></div>
         <div class="task-list" id="tasks-${dateStr}"></div>
       </div>
     `
