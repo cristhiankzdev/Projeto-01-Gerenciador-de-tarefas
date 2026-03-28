@@ -54,8 +54,12 @@
   <main class="app-main">
 
     <!-- 7-Day Grid -->
-    <div class="grid-wrapper" role="region" aria-label="Grade de 5 dias">
-      <div class="day-grid" id="day-grid"></div>
+    <div class="grid-outer" role="region" aria-label="Grade de 5 dias">
+      <button class="grid-nav-btn" id="grid-nav-prev" title="Dias anteriores">‹</button>
+      <div class="grid-wrapper">
+        <div class="day-grid" id="day-grid"></div>
+      </div>
+      <button class="grid-nav-btn" id="grid-nav-next" title="Próximos dias">›</button>
     </div>
 
     <!-- Notes Panel -->
