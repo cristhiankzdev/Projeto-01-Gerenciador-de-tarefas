@@ -88,6 +88,7 @@ async function init() {
   })
 
   renderGrid()
+  await autoAdvancePastTasks().catch(() => {})
   await loadAndRenderTasks()
   renderDailyTip()
   await initNotes()
