@@ -339,11 +339,34 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
 }
 
 .user-greeting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
   color: var(--text-soft);
   white-space: nowrap;
 }
 .user-greeting strong { color: var(--text); }
+
+.user-avatar-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: var(--transition);
+}
+.user-avatar-circle:hover { border-color: var(--primary); opacity: 0.85; }
+.user-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
 
 /* ── Category pills ──────────────────────────────────────────────────────── */
 .pill {
