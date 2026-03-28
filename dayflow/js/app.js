@@ -368,8 +368,16 @@ function createTaskElement(task, idx) {
       })
     })
 
+    div.querySelector('.tc-archive-btn')?.addEventListener('click', async e => {
+      e.stopPropagation()
+      await archiveTask(task.id)
+      tasks = tasks.filter(t => t.id !== task.id)
+      renderTasksInGrid()
+      showToast('Tarefa arquivada')
+    })
+
     div.querySelector('.tc-row').addEventListener('click', e => {
-      if (e.target.closest('.tc-arrow, .tc-expand-btn')) return
+      if (e.target.closest('.tc-arrow, .tc-expand-btn, .tc-archive-btn')) return
       openTaskModal(task)
     })
 
