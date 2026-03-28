@@ -57,6 +57,12 @@ function translateError(msg) {
     'Password should be at least 6 characters': 'A senha deve ter pelo menos 6 caracteres.',
     'Unable to validate email address: invalid format': 'Formato de e-mail inválido.',
     'signup is disabled': 'Cadastro desabilitado. Contate o suporte.',
+    'Database error saving new user': 'Erro ao salvar dados. Contate o suporte.',
+    'Email rate limit exceeded': 'Limite de envio atingido. Tente mais tarde.',
+    'over_email_send_rate_limit': 'Muitas tentativas. Aguarde alguns minutos.',
+  }
+  if (msg?.startsWith('For security purposes, you can only request this after')) {
+    return 'Aguarde alguns minutos antes de tentar novamente.'
   }
   return map[msg] || 'Ocorreu um erro. Tente novamente.'
 }
