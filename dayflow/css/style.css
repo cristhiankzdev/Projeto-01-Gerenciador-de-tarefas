@@ -1569,6 +1569,18 @@ body.view-mobile .app-main {
   width: 100%;
   align-items: stretch;
 }
+body.view-mobile .grid-outer {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  align-items: stretch;
+  gap: 4px;
+}
+body.view-mobile .grid-nav-btn {
+  margin-top: 0;
+  align-self: center;
+}
 body.view-mobile .grid-wrapper {
   display: flex;
   flex: 1;
