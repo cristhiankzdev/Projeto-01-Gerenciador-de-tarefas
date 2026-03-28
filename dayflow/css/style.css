@@ -1490,6 +1490,8 @@ body.view-mobile .app-main {
   min-height: 0;
   overflow: hidden;
   padding-bottom: 12px;
+  width: 100%;
+  align-items: stretch;
 }
 body.view-mobile .grid-wrapper {
   display: flex;
@@ -1502,6 +1504,7 @@ body.view-mobile .day-grid {
   display: flex;
   flex: 1;
   min-height: 0;
+  width: 100%;
 }
 body.view-mobile .day-column:not(.today) { display: none; }
 body.view-mobile .notes-panel { display: none; }
@@ -1511,6 +1514,8 @@ body.view-mobile .today {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  width: 100%;
+  min-width: 0;
 }
 body.view-mobile .task-list {
   flex: 1;
