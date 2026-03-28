@@ -548,7 +548,6 @@ function initTaskModal() {
   document.getElementById('delete-task-btn').addEventListener('click', () => confirmDeleteTask(editingTask))
   document.getElementById('archive-task-btn').addEventListener('click', async () => {
     if (!editingTask) return
-    if (googleSync) gcalDelete(editingTask)
     await archiveTask(editingTask.id)
     tasks = tasks.filter(t => t.id !== editingTask.id)
     closeModal()
