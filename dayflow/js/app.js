@@ -743,25 +743,229 @@ function closeModal() {
   modalSteps = []
 }
 
+// ── User avatar (header) ───────────────────────────────────────────────────────
+function setUserAvatar(profile) {
+  const el = document.getElementById('user-avatar')
+  if (!el) return
+  if (profile?.avatar_url) {
+    el.innerHTML = `<img src="${profile.avatar_url}" alt="">`
+  } else {
+    el.textContent = (profile?.name ?? currentUser.email).charAt(0).toUpperCase()
+  }
+}
+
 // ── Settings modal ─────────────────────────────────────────────────────────────
 function initSettingsModal() {
   const modal = document.getElementById('settings-modal')
-  document.getElementById('settings-btn').addEventListener('click', () => {
-    document.getElementById('settings-name-input').value =
-      document.getElementById('user-name').textContent
+  const footer = document.getElementById('settings-footer')
+  let pendingAvatarFile = null
+
+  function switchTab(tab) {
+    modal.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab))
+    document.getElementById('stab-profile').style.display    = tab === 'profile'    ? 'flex' : 'none'
+    document.getElementById('stab-categories').style.display = tab === 'categories' ? 'flex' : 'none'
+    document.getElementById('stab-archive').style.display    = tab === 'archive'    ? 'flex' : 'none'
+    footer.style.display = tab === 'profile' ? 'flex' : 'none'
+    if (tab === 'categories') renderStabCategories()
+    if (tab === 'archive')    renderStabArchive()
+    if (typeof lucide !== 'undefined') lucide.createIcons()
+  }
+
+  document.getElementById('settings-btn').addEventListener('click', async () => {
+    switchTab('profile')
+    const profile = await getProfile(currentUser.id)
+    document.getElementById('settings-name-input').value  = profile?.name ?? document.getElementById('user-name').textContent
+    document.getElementById('settings-birth-input').value = profile?.birth_date ?? ''
+    const preview = document.getElementById('settings-avatar-preview')
+    if (profile?.avatar_url) {
+      preview.innerHTML = `<img src="${profile.avatar_url}" alt="">`
+    } else {
+      preview.innerHTML = ''
+      preview.textContent = (profile?.name ?? currentUser.email).charAt(0).toUpperCase()
+    }
+    pendingAvatarFile = null
     modal.classList.add('open')
+    if (typeof lucide !== 'undefined') lucide.createIcons()
   })
+
+  modal.querySelectorAll('.settings-tab-btn').forEach(btn =>
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab))
+  )
+
   document.getElementById('close-settings-modal').addEventListener('click', () => modal.classList.remove('open'))
   document.getElementById('cancel-settings-btn').addEventListener('click', () => modal.classList.remove('open'))
   modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open') })
 
+  document.getElementById('settings-avatar-input').addEventListener('change', e => {
+    const file = e.target.files[0]
+    if (!file) return
+    pendingAvatarFile = file
+    const reader = new FileReader()
+    reader.onload = ev => {
+      const preview = document.getElementById('settings-avatar-preview')
+      preview.textContent = ''
+      preview.innerHTML = `<img src="${ev.target.result}" alt="">`
+    }
+    reader.readAsDataURL(file)
+  })
+
   document.getElementById('save-settings-btn').addEventListener('click', async () => {
-    const name = document.getElementById('settings-name-input').value.trim()
+    const name      = document.getElementById('settings-name-input').value.trim()
+    const birthDate = document.getElementById('settings-birth-input').value || null
     if (!name) return
-    await updateProfile(currentUser.id, name)
+
+    const updates = { name, birth_date: birthDate }
+
+    if (pendingAvatarFile) {
+      try {
+        updates.avatar_url = await uploadAvatar(currentUser.id, pendingAvatarFile)
+      } catch {
+        showToast('Erro ao enviar foto. Tente novamente.')
+        return
+      }
+      pendingAvatarFile = null
+    }
+
+    await updateProfile(currentUser.id, updates)
     document.getElementById('user-name').textContent = name
+    const profile = await getProfile(currentUser.id)
+    setUserAvatar(profile)
     modal.classList.remove('open')
     showToast('Perfil atualizado!')
+  })
+}
+
+// ── Settings — Categorias tab ─────────────────────────────────────────────────
+const STAB_EMOJIS = ['💼','🏠','❤️','📚','🎯','🎨','🏋️','🍕','✈️','🎮','💰','🌱','🎵','🔧','🐾','🌸','⭐','🎁','🏆','🎭','🔬','💡','🌊','🚀','🏖️','🌙','🎓','💻','🌍','🧠','🐶','🎈','🔑','⚽','🍃','🎻','🦋','🛍️','🍎','🏡','🌺']
+const STAB_COLORS = ['#4A7FC1','#7D9B76','#D95F5F','#8B6FBA','#C17E4A','#E8A838','#E87BB0','#5BB8D4','#8BC34A','#FF7043','#78909C','#A1887F','#26A69A','#EF5350','#AB47BC','#7E57C2','#29B6F6','#66BB6A','#FFCA28','#8D6E63','#EC407A','#546E7A']
+
+async function renderStabCategories() {
+  const list   = document.getElementById('stab-categories-list')
+  const formEl = document.getElementById('stab-category-form')
+  formEl.style.display = 'none'
+  list.innerHTML = '<p class="loading-text">Carregando...</p>'
+  const cats = await getCategories(currentUser.id)
+  if (!cats.length) {
+    list.innerHTML = '<p class="empty-text">Nenhuma categoria ainda.</p>'
+  } else {
+    list.innerHTML = cats.map(c => `
+      <div class="category-item" data-id="${c.id}">
+        <span class="category-badge" style="background:${c.color}22;color:${c.color}">${c.emoji}</span>
+        <span class="category-name">${c.name}</span>
+        <div class="category-item-actions">
+          <button class="icon-btn edit-cat-btn" data-id="${c.id}" title="Editar">✏️</button>
+          <button class="icon-btn delete-cat-btn" data-id="${c.id}" data-name="${c.name}" title="Excluir">🗑️</button>
+        </div>
+      </div>
+    `).join('')
+    list.querySelectorAll('.edit-cat-btn').forEach(btn =>
+      btn.addEventListener('click', () => {
+        const cat = cats.find(c => c.id === btn.dataset.id)
+        if (cat) showStabCategoryForm(cat)
+      })
+    )
+    list.querySelectorAll('.delete-cat-btn').forEach(btn =>
+      btn.addEventListener('click', () => confirmStabDeleteCategory(btn.dataset.id, btn.dataset.name))
+    )
+  }
+  document.getElementById('stab-add-category-btn').onclick = () => showStabCategoryForm(null)
+}
+
+function showStabCategoryForm(cat = null) {
+  const form = document.getElementById('stab-category-form')
+  let selectedEmoji = cat?.emoji ?? STAB_EMOJIS[0]
+  let selectedColor = cat?.color ?? STAB_COLORS[0]
+  form.innerHTML = `
+    <h4 style="margin-bottom:12px">${cat ? 'Editar categoria' : 'Nova categoria'}</h4>
+    <div class="form-group">
+      <label>Nome</label>
+      <input type="text" id="stab-cat-name" value="${cat?.name ?? ''}" placeholder="Ex: Trabalho, Academia...">
+    </div>
+    <div class="form-group">
+      <label>Emoji</label>
+      <div class="emoji-grid">
+        ${STAB_EMOJIS.map(e => `<button type="button" class="emoji-btn${selectedEmoji === e ? ' selected' : ''}" data-emoji="${e}">${e}</button>`).join('')}
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Cor</label>
+      <div class="color-grid">
+        ${STAB_COLORS.map(c => `<button type="button" class="color-btn${selectedColor === c ? ' selected' : ''}" data-color="${c}" style="background:${c}" title="${c}"></button>`).join('')}
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:16px">
+      <button type="button" class="btn-secondary" id="stab-cancel-cat">Cancelar</button>
+      <button type="button" class="btn-primary" id="stab-save-cat">Salvar</button>
+    </div>
+  `
+  form.style.display = 'block'
+  form.querySelectorAll('.emoji-btn').forEach(btn => btn.addEventListener('click', () => {
+    form.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'))
+    btn.classList.add('selected'); selectedEmoji = btn.dataset.emoji
+  }))
+  form.querySelectorAll('.color-btn').forEach(btn => btn.addEventListener('click', () => {
+    form.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'))
+    btn.classList.add('selected'); selectedColor = btn.dataset.color
+  }))
+  form.querySelector('#stab-cancel-cat').addEventListener('click', () => { form.style.display = 'none' })
+  form.querySelector('#stab-save-cat').addEventListener('click', async () => {
+    const name = document.getElementById('stab-cat-name').value.trim()
+    if (!name) { document.getElementById('stab-cat-name').focus(); return }
+    if (cat) {
+      await updateCategory(cat.id, { name, emoji: selectedEmoji, color: selectedColor })
+    } else {
+      await createCategory({ user_id: currentUser.id, name, emoji: selectedEmoji, color: selectedColor })
+    }
+    form.style.display = 'none'
+    await renderStabCategories()
+    await loadCategories()
+    await loadAndRenderTasks()
+  })
+  document.getElementById('stab-cat-name').focus()
+}
+
+async function confirmStabDeleteCategory(id, name) {
+  const count = await countTasksByCategory(id)
+  const msg = count > 0
+    ? `${count} tarefa(s) serão movidas para "Sem categoria". Confirmar exclusão de "${name}"?`
+    : `Excluir a categoria "${name}"?`
+  if (confirm(msg)) {
+    await deleteCategory(id)
+    document.getElementById('stab-category-form').style.display = 'none'
+    await renderStabCategories()
+    await loadCategories()
+    await loadAndRenderTasks()
+  }
+}
+
+// ── Settings — Arquivadas tab ─────────────────────────────────────────────────
+async function renderStabArchive() {
+  const list = document.getElementById('stab-archive-list')
+  list.innerHTML = '<p class="loading-text">Carregando...</p>'
+  const archived = await getArchivedTasks(currentUser.id)
+  if (!archived.length) {
+    list.innerHTML = '<p class="empty-text">Nenhuma tarefa arquivada.</p>'
+    return
+  }
+  list.innerHTML = ''
+  archived.forEach(task => {
+    const cat  = task.categories
+    const item = document.createElement('div')
+    item.className = 'archive-item'
+    item.innerHTML = `
+      <span class="archive-emoji">${cat?.emoji ?? '📌'}</span>
+      <div class="archive-info">
+        <span class="archive-title">${task.title}</span>
+        <span class="archive-date">${task.date}</span>
+      </div>
+      <button class="archive-delete-btn" data-id="${task.id}" title="Excluir permanentemente">🗑️</button>
+    `
+    item.querySelector('.archive-delete-btn').addEventListener('click', async () => {
+      await deleteTask(task.id)
+      item.remove()
+      if (!list.children.length) list.innerHTML = '<p class="empty-text">Nenhuma tarefa arquivada.</p>'
+    })
+    list.appendChild(item)
   })
 }
 
