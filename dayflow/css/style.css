@@ -416,12 +416,42 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
   align-items: flex-start;
 }
 
+.grid-outer {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
 .grid-wrapper {
   flex: 1;
   min-width: 0;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+}
+
+.grid-nav-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  margin-top: 16px;
+}
+.grid-nav-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────── */
