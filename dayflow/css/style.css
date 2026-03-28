@@ -313,7 +313,7 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
   gap: 8px;
   flex-shrink: 0;
 }
-.header-logo .logo-icon { font-size: 20px; }
+.header-logo .logo-icon { display: flex; align-items: center; }
 .header-logo .logo-text {
   font-family: 'DM Sans', sans-serif;
   font-size: 15px;
