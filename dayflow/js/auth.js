@@ -161,6 +161,10 @@ if (loginForm) {
       errorEl.textContent = 'Digite seu e-mail no campo acima primeiro.'
       return
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errorEl.textContent = 'Formato de e-mail inválido.'
+      return
+    }
     try {
       await resetPassword(email)
       errorEl.className = 'form-error success'
