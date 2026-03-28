@@ -245,6 +245,40 @@ async function loadAndRenderTasks() {
   const dates = getGridDates()
   tasks = await getTasks(currentUser.id, localDateStr(dates[0]), localDateStr(dates[4]))
   renderTasksInGrid()
+  await loadAndRenderEvents()
+}
+
+// ── Events in grid ─────────────────────────────────────────────────────────────
+async function loadAndRenderEvents() {
+  const dates = getGridDates()
+  try {
+    const list = await getEvents(currentUser.id, localDateStr(dates[0]), localDateStr(dates[4]))
+    calendarEvents = {}
+    list.forEach(ev => {
+      calendarEvents[ev.date] = { color: ev.color || '#4A7FC1', description: ev.description || '' }
+    })
+  } catch {
+    calendarEvents = {}
+  }
+  renderEventsInGrid()
+}
+
+function renderEventsInGrid() {
+  getGridDates().forEach(date => {
+    const dateStr = localDateStr(date)
+    const container = document.getElementById(`day-events-${dateStr}`)
+    if (!container) return
+    container.innerHTML = ''
+    const ev = calendarEvents[dateStr]
+    if (ev) {
+      const bar = document.createElement('div')
+      bar.className = 'day-event-bar'
+      bar.style.setProperty('--event-bar-color', ev.color)
+      bar.title = ev.description || 'Evento'
+      bar.textContent = ev.description || 'Evento'
+      container.appendChild(bar)
+    }
+  })
 }
 
 function renderTasksInGrid() {
