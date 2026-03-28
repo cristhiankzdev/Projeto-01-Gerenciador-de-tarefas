@@ -251,7 +251,6 @@ function renderTasksInGrid() {
       catGroups[key].push(task)
     })
 
-    const multiCat = catKeys.length > 1
     let idx = 0
 
     catKeys.forEach(key => {
@@ -259,47 +258,43 @@ function renderTasksInGrid() {
         (priorityOrder[a.priority] ?? 1) - (priorityOrder[b.priority] ?? 1)
       )
 
-      if (multiCat) {
-        const cat = key === '__none__' ? null : categories.find(c => c.id === key)
-        const color = cat?.color ?? '#9CA3AF'
-        const isCollapsed = collapsedCategories.has(key)
+      const cat = key === '__none__' ? null : categories.find(c => c.id === key)
+      const color = cat?.color ?? '#9CA3AF'
+      const isCollapsed = collapsedCategories.has(key)
 
-        const group = document.createElement('div')
-        group.className = 'task-cat-group'
+      const group = document.createElement('div')
+      group.className = 'task-cat-group'
 
-        const header = document.createElement('div')
-        header.className = 'task-cat-header'
-        header.style.setProperty('--cat-group-color', color)
-        header.innerHTML = `
-          <div class="task-cat-header-left">
-            <span class="task-cat-name">${cat ? `${cat.emoji} ${cat.name}` : '<span style="opacity:0.5">Sem categoria</span>'}</span>
-            <span class="task-cat-count">${allTasks.length}</span>
-          </div>
-          <button class="task-cat-toggle" title="${isCollapsed ? 'Expandir' : 'Minimizar'}">${isCollapsed ? '▸' : '▾'}</button>
-        `
+      const header = document.createElement('div')
+      header.className = 'task-cat-header'
+      header.style.setProperty('--cat-group-color', color)
+      header.innerHTML = `
+        <div class="task-cat-header-left">
+          <span class="task-cat-name">${cat ? `${cat.emoji} ${cat.name}` : '<span style="opacity:0.5">Sem categoria</span>'}</span>
+          <span class="task-cat-count">${allTasks.length}</span>
+        </div>
+        <button class="task-cat-toggle" title="${isCollapsed ? 'Expandir' : 'Minimizar'}">${isCollapsed ? '▸' : '▾'}</button>
+      `
 
-        const body = document.createElement('div')
-        body.className = 'task-cat-body'
-        if (isCollapsed) body.hidden = true
+      const body = document.createElement('div')
+      body.className = 'task-cat-body'
+      if (isCollapsed) body.hidden = true
 
-        header.querySelector('.task-cat-toggle').addEventListener('click', e => {
-          e.stopPropagation()
-          if (collapsedCategories.has(key)) {
-            collapsedCategories.delete(key)
-          } else {
-            collapsedCategories.add(key)
-          }
-          renderTasksInGrid()
-        })
+      header.querySelector('.task-cat-toggle').addEventListener('click', e => {
+        e.stopPropagation()
+        if (collapsedCategories.has(key)) {
+          collapsedCategories.delete(key)
+        } else {
+          collapsedCategories.add(key)
+        }
+        renderTasksInGrid()
+      })
 
-        group.appendChild(header)
-        group.appendChild(body)
-        container.appendChild(group)
+      group.appendChild(header)
+      group.appendChild(body)
+      container.appendChild(group)
 
-        allTasks.forEach(task => body.appendChild(createTaskElement(task, idx++)))
-      } else {
-        allTasks.forEach(task => container.appendChild(createTaskElement(task, idx++)))
-      }
+      allTasks.forEach(task => body.appendChild(createTaskElement(task, idx++)))
     })
   })
 
