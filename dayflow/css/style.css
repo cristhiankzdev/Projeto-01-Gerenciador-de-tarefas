@@ -529,6 +529,27 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
   color: var(--primary);
 }
 
+/* ── Day event bars ─────────────────────────────────────────────────────── */
+.day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.day-event-bar {
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--event-bar-color, var(--primary));
+  font-size: 11px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+}
+
 .task-list {
   display: flex;
   flex-direction: column;
