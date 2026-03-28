@@ -1287,7 +1287,7 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
   border-radius: 12px;
   padding: 12px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-  width: 210px;
+  width: 220px;
   display: flex;
   flex-direction: column;
   gap: 10px;
