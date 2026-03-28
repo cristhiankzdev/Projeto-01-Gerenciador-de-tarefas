@@ -130,17 +130,28 @@ export async function saveNote(userId, content) {
 export async function getProfile(userId) {
   const { data } = await supabase
     .from('profiles')
-    .select('name')
+    .select('name, birth_date, avatar_url')
     .eq('id', userId)
     .single()
   return data
 }
 
-export async function updateProfile(userId, name) {
+export async function updateProfile(userId, updates) {
   const { error } = await supabase
     .from('profiles')
-    .upsert({ id: userId, name })
+    .upsert({ id: userId, ...updates })
   if (error) throw error
+}
+
+export async function uploadAvatar(userId, file) {
+  const ext = file.name.split('.').pop()
+  const path = `${userId}/avatar.${ext}`
+  const { error } = await supabase.storage
+    .from('avatars')
+    .upload(path, file, { upsert: true })
+  if (error) throw error
+  const { data } = supabase.storage.from('avatars').getPublicUrl(path)
+  return data.publicUrl + '?t=' + Date.now()
 }
 
 // ── Events (calendar marks) ────────────────────────────────────────────────────
