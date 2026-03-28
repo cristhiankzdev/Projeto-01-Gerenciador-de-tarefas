@@ -275,7 +275,10 @@ function renderEventsInGrid() {
       bar.className = 'day-event-bar'
       bar.style.setProperty('--event-bar-color', ev.color)
       bar.title = ev.description || 'Evento'
-      bar.textContent = ev.description || 'Evento'
+      const nameSpan = document.createElement('span')
+      nameSpan.className = 'day-event-name'
+      nameSpan.textContent = (ev.emoji ? ev.emoji + ' ' : '') + (ev.description || 'Evento')
+      bar.appendChild(nameSpan)
       container.appendChild(bar)
     }
   })
