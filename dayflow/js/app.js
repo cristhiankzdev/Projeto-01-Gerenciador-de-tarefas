@@ -440,7 +440,6 @@ async function toggleComplete(task, btn) {
     completed: newCompleted,
     completed_at: newCompleted ? new Date().toISOString() : null,
   })
-  if (googleSync) gcalUpdate(updated)
   const i = tasks.findIndex(t => t.id === task.id)
   if (i !== -1) tasks[i] = updated
   renderTasksInGrid()
