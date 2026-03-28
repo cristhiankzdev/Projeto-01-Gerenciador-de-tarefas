@@ -63,6 +63,13 @@ async function init() {
   }
   currentUser = session.user
 
+  // Redirect admins to the admin panel (covers Google OAuth flow)
+  const ADMIN_EMAILS = ['tenenteoliveirapmal@gmail.com']
+  if (ADMIN_EMAILS.includes(currentUser.email)) {
+    window.location.href = 'admin.html'
+    return
+  }
+
   let profile = await getProfile(currentUser.id)
   if (!profile) {
     // Google OAuth users may not have a profile if the DB trigger didn't run
