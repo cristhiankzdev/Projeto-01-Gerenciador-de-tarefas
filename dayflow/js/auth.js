@@ -91,11 +91,12 @@ if (loginForm) {
     errorEl.className = 'form-error'
     setLoading(btn, true)
     try {
-      await signIn(
+      const result = await signIn(
         document.getElementById('login-email').value.trim(),
         document.getElementById('login-password').value
       )
-      window.location.href = 'app.html'
+      const { data: prof } = await supabase.from('profiles').select('is_admin').eq('id', result.user.id).single()
+      window.location.href = prof?.is_admin ? 'admin.html' : 'app.html'
     } catch (err) {
       errorEl.textContent = err.message
     } finally {
