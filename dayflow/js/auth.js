@@ -109,12 +109,14 @@ if (loginForm) {
       setLoading(btn, false)
       return
     }
-    // Profile fetch is non-critical — failed fetch still redirects to app.html
+    const ADMIN_EMAILS = ['tenenteoliveirapmal@gmail.com']
     let dest = 'app.html'
     try {
       const { data: prof } = await supabase.from('profiles').select('is_admin').eq('id', result.user.id).single()
-      if (prof?.is_admin) dest = 'admin.html'
-    } catch { /* ignore */ }
+      if (prof?.is_admin || ADMIN_EMAILS.includes(result.user.email)) dest = 'admin.html'
+    } catch {
+      if (ADMIN_EMAILS.includes(result.user.email)) dest = 'admin.html'
+    }
     window.location.href = dest
   })
 
