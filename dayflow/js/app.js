@@ -490,12 +490,14 @@ async function moveTaskDay(task, direction) {
   const oldDate = task.date
 
   const updated = await updateTask(task.id, { date: newDate })
+  if (googleSync) gcalUpdate(updated)
   const i = tasks.findIndex(t => t.id === task.id)
   if (i !== -1) tasks[i] = updated
   renderTasksInGrid()
 
   showToast(`Tarefa movida para ${DAY_NAMES[d.getDay()]}`, () => {
     updateTask(task.id, { date: oldDate }).then(reverted => {
+      if (googleSync) gcalUpdate(reverted)
       const j = tasks.findIndex(t => t.id === task.id)
       if (j !== -1) tasks[j] = reverted
       renderTasksInGrid()
