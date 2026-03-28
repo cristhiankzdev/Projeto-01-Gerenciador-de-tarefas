@@ -7,6 +7,8 @@ import { initCalendar } from './calendar.js'
 let currentUser = null
 let categories = []
 let tasks = []
+let calendarEvents = {}
+let gridOffset = 0
 let activeCategoryFilter = 'all'
 let editingTask = null
 let editingDate = null
