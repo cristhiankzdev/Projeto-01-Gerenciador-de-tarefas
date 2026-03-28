@@ -169,18 +169,51 @@
 
   <!-- ── Settings Modal ──────────────────────────────────────────────────── -->
   <div id="settings-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
-    <div class="modal-box">
+    <div class="modal-box modal-box--settings">
       <div class="modal-header">
         <h3 id="settings-modal-title">Configurações</h3>
         <button id="close-settings-modal" class="close-btn" aria-label="Fechar"><i data-lucide="x"></i></button>
       </div>
+      <div class="settings-tabs-nav">
+        <button class="settings-tab-btn active" data-tab="profile">Perfil</button>
+        <button class="settings-tab-btn" data-tab="categories">Categorias</button>
+        <button class="settings-tab-btn" data-tab="archive">Arquivadas</button>
+      </div>
       <div class="modal-body">
-        <div class="form-group">
-          <label for="settings-name-input">Nome de exibição</label>
-          <input type="text" id="settings-name-input" placeholder="Seu nome" maxlength="60">
+        <!-- Perfil -->
+        <div id="stab-profile" class="settings-panel">
+          <div class="profile-photo-section">
+            <div class="profile-photo-wrap">
+              <div id="settings-avatar-preview" class="profile-avatar-lg"></div>
+              <label for="settings-avatar-input" class="avatar-change-btn" title="Alterar foto">
+                <i data-lucide="camera"></i>
+              </label>
+              <input type="file" id="settings-avatar-input" accept="image/png,image/jpeg,image/webp" hidden>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="settings-name-input">Nome de exibição</label>
+            <input type="text" id="settings-name-input" placeholder="Seu nome" maxlength="60">
+          </div>
+          <div class="form-group">
+            <label for="settings-birth-input">Data de nascimento</label>
+            <input type="date" id="settings-birth-input">
+          </div>
+        </div>
+        <!-- Categorias -->
+        <div id="stab-categories" class="settings-panel" style="display:none">
+          <div id="stab-categories-list"></div>
+          <button id="stab-add-category-btn" class="btn-secondary" style="margin-top:8px;width:100%">
+            <i data-lucide="plus"></i> Nova categoria
+          </button>
+          <div id="stab-category-form" style="display:none;margin-top:16px;padding:16px;background:var(--bg);border-radius:12px;border:1px solid var(--border)"></div>
+        </div>
+        <!-- Arquivadas -->
+        <div id="stab-archive" class="settings-panel" style="display:none">
+          <div id="stab-archive-list"></div>
         </div>
       </div>
-      <div class="modal-footer">
+      <div id="settings-footer" class="modal-footer">
         <div class="modal-actions">
           <button id="cancel-settings-btn" class="btn-secondary">Cancelar</button>
           <button id="save-settings-btn" class="btn-primary">Salvar</button>
