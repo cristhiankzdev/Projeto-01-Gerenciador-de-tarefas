@@ -1253,6 +1253,31 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
   font-weight: 700;
 }
 
+/* ── Calendar popup choice ──────────────────────────────────────────────── */
+.cal-popup-choice {
+  display: flex;
+  gap: 6px;
+}
+
+.cal-choice-btn {
+  flex: 1;
+  padding: 6px 4px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text-soft);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.cal-choice-btn:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
 /* ── Calendar event popup ───────────────────────────────────────────────── */
 .cal-event-popup {
   position: fixed;
