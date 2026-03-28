@@ -737,7 +737,6 @@ async function saveTask() {
 async function confirmDeleteTask(task) {
   if (!task) return
   if (!confirm(`Excluir a tarefa "${task.title}"?`)) return
-  if (googleSync) gcalDelete(task)
   await deleteTask(task.id)
   tasks = tasks.filter(t => t.id !== task.id)
   closeModal()
