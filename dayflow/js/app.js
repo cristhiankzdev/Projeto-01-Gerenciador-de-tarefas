@@ -103,10 +103,9 @@ async function init() {
     lucide.createIcons()
   })
 
-  document.getElementById('archive-btn').addEventListener('click', openArchiveModal)
-  const archiveModal = document.getElementById('archive-modal')
-  document.getElementById('close-archive-modal').addEventListener('click', () => archiveModal.classList.remove('open'))
-  archiveModal.addEventListener('click', e => { if (e.target === archiveModal) archiveModal.classList.remove('open') })
+  document.getElementById('user-avatar').addEventListener('click', () => {
+    document.getElementById('settings-btn').click()
+  })
   initTaskModal()
   initSettingsModal()
   if (typeof lucide !== 'undefined') lucide.createIcons()
