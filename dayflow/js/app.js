@@ -1,5 +1,5 @@
 import { getSession, signOut } from './auth.js'
-import { getTasks, createTask, updateTask, deleteTask, getCategories, createCategory, updateCategory, deleteCategory, countTasksByCategory, getNote, saveNote, getProfile, updateProfile, uploadAvatar, archiveTask, getArchivedTasks } from './db.js'
+import { getTasks, createTask, updateTask, deleteTask, getCategories, createCategory, updateCategory, deleteCategory, countTasksByCategory, getNote, saveNote, getProfile, updateProfile, uploadAvatar, archiveTask, getArchivedTasks, advancePastIncompleteTasks } from './db.js'
 import { launchConfetti } from './confetti.js'
 import { initCategories } from './categories.js'
 import { initCalendar } from './calendar.js'
