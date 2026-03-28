@@ -470,6 +470,7 @@ async function setStepIndex(task, newCurrentStep) {
     completed: isComplete,
     completed_at: isComplete ? new Date().toISOString() : null,
   })
+  if (googleSync) gcalUpdate(updated)
   const i = tasks.findIndex(t => t.id === task.id)
   if (i !== -1) tasks[i] = updated
   renderTasksInGrid()
