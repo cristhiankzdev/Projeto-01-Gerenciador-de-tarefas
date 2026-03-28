@@ -63,7 +63,13 @@ async function init() {
   }
   currentUser = session.user
 
-  const profile = await getProfile(currentUser.id)
+  let profile = await getProfile(currentUser.id)
+  if (!profile) {
+    // Google OAuth users may not have a profile if the DB trigger didn't run
+    const name = currentUser.user_metadata?.full_name ?? currentUser.user_metadata?.name ?? currentUser.email.split('@')[0]
+    await updateProfile(currentUser.id, name).catch(() => {})
+    profile = { name }
+  }
   document.getElementById('user-name').textContent =
     profile?.name ?? currentUser.email.split('@')[0]
 
