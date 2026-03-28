@@ -720,11 +720,20 @@ async function saveTask() {
 
   if (editingTask) {
     const updated = await updateTask(editingTask.id, data)
+    if (googleSync) gcalUpdate(updated)
     const i = tasks.findIndex(t => t.id === editingTask.id)
     if (i !== -1) tasks[i] = updated
   } else {
     const created = await createTask(data)
     tasks.push(created)
+    if (googleSync) {
+      const eventIds = await gcalCreate(created)
+      if (eventIds) {
+        const withIds = await updateTask(created.id, { google_event_ids: eventIds })
+        const idx = tasks.findIndex(t => t.id === created.id)
+        if (idx !== -1) tasks[idx] = withIds
+      }
+    }
   }
 
   closeModal()
