@@ -342,6 +342,7 @@ function createTaskElement(task, idx) {
           <span class="tc-prog-label">${task.completed ? total : current}/${total}</span>
         </div>
         <span class="tc-priority ${priorityClass}">${priorityLabel}</span>
+        ${task.completed ? '<button class="tc-archive-btn" title="Arquivar">📦</button>' : ''}
         <button class="tc-expand-btn" title="Ver etapas">▾</button>
         ${!task.completed ? '<button class="tc-arrow move-next" title="Próximo dia">→</button>' : ''}
       </div>
