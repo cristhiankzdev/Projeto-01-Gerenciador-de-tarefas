@@ -27,10 +27,7 @@ export async function signOut() {
 export async function signInWithGoogle() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
-    options: {
-      redirectTo: window.location.origin + '/app.html',
-      scopes: 'https://www.googleapis.com/auth/calendar.events',
-    }
+    options: { redirectTo: window.location.origin + '/app.html' }
   })
   if (error) throw new Error('Erro ao conectar com Google. Tente novamente.')
 }
