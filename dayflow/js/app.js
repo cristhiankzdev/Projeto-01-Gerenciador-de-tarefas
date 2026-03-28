@@ -411,6 +411,7 @@ function createTaskElement(task, idx) {
 
     div.querySelector('.tc-archive-btn')?.addEventListener('click', async e => {
       e.stopPropagation()
+      if (googleSync) gcalDelete(task)
       await archiveTask(task.id)
       tasks = tasks.filter(t => t.id !== task.id)
       renderTasksInGrid()
