@@ -5,6 +5,7 @@ import { supabase } from './supabase.js'
 export async function signIn(email, password) {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password })
   if (error) throw new Error(translateError(error.message))
+  if (!data.session) throw new Error('Confirme seu e-mail antes de entrar.')
   return data
 }
 
@@ -12,7 +13,8 @@ export async function signUp(email, password, name) {
   const { data, error } = await supabase.auth.signUp({ email, password })
   if (error) throw new Error(translateError(error.message))
   if (data.user) {
-    await supabase.from('profiles').insert({ id: data.user.id, name })
+    // upsert handles the case where the DB trigger already created the profile
+    await supabase.from('profiles').upsert({ id: data.user.id, name, email }, { onConflict: 'id' })
   }
   return data
 }
