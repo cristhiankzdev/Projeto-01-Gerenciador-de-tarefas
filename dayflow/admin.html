@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin — Gerenciador de Tarefas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-logo">
+        <span>🍀</span>
+        <div>
+          <div class="admin-logo-title">DayFlow</div>
+          <div class="admin-logo-sub">Painel Admin</div>
+        </div>
+      </div>
+      <nav class="admin-nav">
+        <button class="admin-nav-btn active" data-section="users">
+          <span class="admin-nav-icon">👥</span> Usuários
+        </button>
+      </nav>
+      <button id="admin-logout-btn" class="admin-logout-btn">
+        <span>↩</span> Sair
+      </button>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+      <!-- Users section -->
+      <section id="section-users" class="admin-section">
+        <div class="admin-section-header">
+          <h1>Usuários</h1>
+          <button id="refresh-btn" class="btn-refresh" title="Atualizar">↻</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="admin-stats">
+          <div class="stat-card">
+            <div class="stat-value" id="stat-total">—</div>
+            <div class="stat-label">Total de usuários</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-google">—</div>
+            <div class="stat-label">Login com Google</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-email">—</div>
+            <div class="stat-label">Login com e-mail</div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Provedor</th>
+                <th>Cadastro</th>
+                <th>Admin</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody">
+              <tr><td colspan="5" class="table-loading">Carregando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
