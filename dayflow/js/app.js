@@ -255,7 +255,7 @@ async function loadAndRenderEvents() {
     const list = await getEvents(currentUser.id, localDateStr(dates[0]), localDateStr(dates[4]))
     calendarEvents = {}
     list.forEach(ev => {
-      calendarEvents[ev.date] = { color: ev.color || '#4A7FC1', description: ev.description || '' }
+      calendarEvents[ev.date] = { color: ev.color || '#4A7FC1', description: ev.description || '', emoji: ev.emoji || '' }
     })
   } catch {
     calendarEvents = {}
