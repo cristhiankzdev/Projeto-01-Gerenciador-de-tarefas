@@ -178,10 +178,10 @@ export async function getEvents(userId, startDate, endDate) {
   return data ?? []
 }
 
-export async function setEvent(userId, date, { color = '#4A7FC1', description = '' } = {}) {
+export async function setEvent(userId, date, { color = '#4A7FC1', description = '', emoji = '' } = {}) {
   const { data, error } = await supabase
     .from('events')
-    .upsert({ user_id: userId, date, color, description }, { onConflict: 'user_id,date' })
+    .upsert({ user_id: userId, date, color, description, emoji }, { onConflict: 'user_id,date' })
     .select()
     .single()
   if (error) throw error
