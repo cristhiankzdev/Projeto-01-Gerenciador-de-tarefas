@@ -64,6 +64,7 @@ async function init() {
     return
   }
   currentUser = session.user
+  googleSync = await isGoogleUser()
 
   // Redirect admins to the admin panel (covers Google OAuth flow)
   const ADMIN_EMAILS = ['tenenteoliveirapmal@gmail.com']
