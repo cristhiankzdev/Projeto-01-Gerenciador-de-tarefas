@@ -9,6 +9,8 @@ let viewYear = null
 let viewMonth = null
 let events = {}   // { 'YYYY-MM-DD': { color, description } }
 let activePopup = null
+let onAddTask = null
+let onEventsChange = null
 
 function localDate(date) {
   const y = date.getFullYear()
