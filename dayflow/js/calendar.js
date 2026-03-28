@@ -151,10 +151,12 @@ function makeDayCell(dayNum, dateStr, otherMonth, isToday = false) {
   return cell
 }
 
+const EVENT_EMOJIS = ['📅','🎂','🎉','✈️','🏠','🏥','💼','🎓','⚽','🎵','🍽️','❤️','🎮','📚','🛒','💊']
+
 function openPopup(cell, dateStr) {
   closePopup()
   const existingEv = events[dateStr] || null
-  const ev = existingEv || { color: EVENT_COLORS[0], description: '' }
+  const ev = existingEv || { color: EVENT_COLORS[0], description: '', emoji: '' }
 
   const popup = document.createElement('div')
   popup.className = 'cal-event-popup'
@@ -165,6 +167,12 @@ function openPopup(cell, dateStr) {
     </div>
     <div class="cal-popup-event-form"${existingEv ? '' : ' hidden'}>
       <input type="text" class="cal-popup-input" placeholder="O que acontece nesse dia?" value="${ev.description}" maxlength="60">
+      <div class="cal-popup-emojis">
+        <button class="cal-emoji-btn${!ev.emoji ? ' selected' : ''}" data-emoji="">—</button>
+        ${EVENT_EMOJIS.map(em =>
+          `<button class="cal-emoji-btn${ev.emoji === em ? ' selected' : ''}" data-emoji="${em}">${em}</button>`
+        ).join('')}
+      </div>
       <div class="cal-popup-colors">
         ${EVENT_COLORS.map(c =>
           `<button class="cal-color-btn${ev.color === c ? ' selected' : ''}" data-color="${c}" style="background:${c}"></button>`
@@ -178,6 +186,7 @@ function openPopup(cell, dateStr) {
   `
 
   let selectedColor = ev.color
+  let selectedEmoji = ev.emoji || ''
 
   popup.querySelector('.cal-choice-task').addEventListener('click', e => {
     e.stopPropagation()
@@ -192,6 +201,15 @@ function openPopup(cell, dateStr) {
     setTimeout(() => popup.querySelector('.cal-popup-input').focus(), 10)
   })
 
+  popup.querySelectorAll('.cal-emoji-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation()
+      popup.querySelectorAll('.cal-emoji-btn').forEach(b => b.classList.remove('selected'))
+      btn.classList.add('selected')
+      selectedEmoji = btn.dataset.emoji
+    })
+  })
+
   popup.querySelectorAll('.cal-color-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation()
@@ -204,8 +222,8 @@ function openPopup(cell, dateStr) {
   popup.querySelector('.cal-popup-save').addEventListener('click', async e => {
     e.stopPropagation()
     const description = popup.querySelector('.cal-popup-input').value.trim()
-    await setEvent(userId, dateStr, { color: selectedColor, description })
-    events[dateStr] = { color: selectedColor, description }
+    await setEvent(userId, dateStr, { color: selectedColor, description, emoji: selectedEmoji })
+    events[dateStr] = { color: selectedColor, description, emoji: selectedEmoji }
     closePopup()
     renderGrid()
     if (onEventsChange) onEventsChange()
