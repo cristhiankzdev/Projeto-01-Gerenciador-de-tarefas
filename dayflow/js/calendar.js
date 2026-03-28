@@ -153,24 +153,44 @@ function makeDayCell(dayNum, dateStr, otherMonth, isToday = false) {
 
 function openPopup(cell, dateStr) {
   closePopup()
-  const ev = events[dateStr] || { color: EVENT_COLORS[0], description: '' }
+  const existingEv = events[dateStr] || null
+  const ev = existingEv || { color: EVENT_COLORS[0], description: '' }
 
   const popup = document.createElement('div')
   popup.className = 'cal-event-popup'
   popup.innerHTML = `
-    <input type="text" class="cal-popup-input" placeholder="O que acontece nesse dia?" value="${ev.description}" maxlength="60">
-    <div class="cal-popup-colors">
-      ${EVENT_COLORS.map(c =>
-        `<button class="cal-color-btn${ev.color === c ? ' selected' : ''}" data-color="${c}" style="background:${c}"></button>`
-      ).join('')}
+    <div class="cal-popup-choice">
+      <button class="cal-choice-btn cal-choice-task">📋 Tarefa</button>
+      <button class="cal-choice-btn cal-choice-event">📅 Evento</button>
     </div>
-    <div class="cal-popup-actions">
-      <button class="cal-popup-delete">Remover</button>
-      <button class="cal-popup-save">Salvar</button>
+    <div class="cal-popup-event-form"${existingEv ? '' : ' hidden'}>
+      <input type="text" class="cal-popup-input" placeholder="O que acontece nesse dia?" value="${ev.description}" maxlength="60">
+      <div class="cal-popup-colors">
+        ${EVENT_COLORS.map(c =>
+          `<button class="cal-color-btn${ev.color === c ? ' selected' : ''}" data-color="${c}" style="background:${c}"></button>`
+        ).join('')}
+      </div>
+      <div class="cal-popup-actions">
+        <button class="cal-popup-delete">Remover</button>
+        <button class="cal-popup-save">Salvar</button>
+      </div>
     </div>
   `
 
   let selectedColor = ev.color
+
+  popup.querySelector('.cal-choice-task').addEventListener('click', e => {
+    e.stopPropagation()
+    closePopup()
+    if (onAddTask) onAddTask(dateStr)
+  })
+
+  popup.querySelector('.cal-choice-event').addEventListener('click', e => {
+    e.stopPropagation()
+    const form = popup.querySelector('.cal-popup-event-form')
+    form.hidden = false
+    setTimeout(() => popup.querySelector('.cal-popup-input').focus(), 10)
+  })
 
   popup.querySelectorAll('.cal-color-btn').forEach(btn => {
     btn.addEventListener('click', e => {
@@ -188,6 +208,7 @@ function openPopup(cell, dateStr) {
     events[dateStr] = { color: selectedColor, description }
     closePopup()
     renderGrid()
+    if (onEventsChange) onEventsChange()
   })
 
   popup.querySelector('.cal-popup-delete').addEventListener('click', async e => {
@@ -196,25 +217,26 @@ function openPopup(cell, dateStr) {
     delete events[dateStr]
     closePopup()
     renderGrid()
+    if (onEventsChange) onEventsChange()
   })
 
   document.body.appendChild(popup)
   activePopup = popup
 
   const rect = cell.getBoundingClientRect()
-  const popupW = 210
+  const popupW = 220
   let left = rect.left + rect.width / 2 - popupW / 2
   left = Math.max(8, Math.min(left, window.innerWidth - popupW - 8))
 
   const spaceBelow = window.innerHeight - rect.bottom
-  if (spaceBelow < 180) {
+  if (spaceBelow < 200) {
     popup.style.bottom = (window.innerHeight - rect.top + 6) + 'px'
   } else {
     popup.style.top = (rect.bottom + 6) + 'px'
   }
   popup.style.left = left + 'px'
 
-  setTimeout(() => popup.querySelector('.cal-popup-input').focus(), 10)
+  if (existingEv) setTimeout(() => popup.querySelector('.cal-popup-input').focus(), 10)
 }
 
 function closePopup() {
