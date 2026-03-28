@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de Ícones — DayFlow</title>
+  <style>
+    body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px; background: #f0f4fa; gap: 20px; }
+    canvas { border-radius: 22%; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+    button { padding: 12px 28px; background: #1A3A5C; color: #fff; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
+    button:hover { background: #163055; }
+    p { color: #555; text-align: center; }
+  </style>
+</head>
+<body>
+  <h2>Gerador de Ícones DayFlow</h2>
+  <p>Clique nos botões para baixar os dois ícones e salve-os na pasta <strong>dayflow/icons/</strong></p>
+  <canvas id="canvas"></canvas>
+  <div style="display:flex;gap:12px">
+    <button onclick="download(192)">⬇ Baixar icon-192.png</button>
+    <button onclick="download(512)">⬇ Baixar icon-512.png</button>
+  </div>
+
+  <script>
+    function drawIcon(size) {
+      const canvas = document.getElementById('canvas')
+      canvas.width = size
+      canvas.height = size
+      const ctx = canvas.getContext('2d')
+      const r = size * 0.14
+
+      // Background gradient
+      const grad = ctx.createLinearGradient(0, 0, 0, size)
+      grad.addColorStop(0, '#1A3A5C')
+      grad.addColorStop(1, '#163055')
+      ctx.fillStyle = grad
+      roundRect(ctx, 0, 0, size, size, r)
+      ctx.fill()
+
+      const s = size / 100
+
+      // Calendar body
+      ctx.fillStyle = '#EBF3FF'
+      roundRect(ctx, 12*s, 43*s, 76*s, 46*s, 7*s)
+      ctx.fill()
+
+      // Calendar top bar
+      ctx.fillStyle = '#163055'
+      roundRect(ctx, 5*s, 14*s, 90*s, 28*s, 12*s)
+      ctx.fill()
+
+      // Pin left
+      ctx.fillStyle = '#4A9FE8'
+      roundRect(ctx, 27*s, 3*s, 13*s, 20*s, 5*s)
+      ctx.fill()
+
+      // Pin right
+      ctx.fillStyle = '#4A9FE8'
+      roundRect(ctx, 60*s, 3*s, 13*s, 20*s, 5*s)
+      ctx.fill()
+
+      // Checkmark
+      ctx.strokeStyle = '#3B82F6'
+      ctx.lineWidth = 8 * s
+      ctx.lineCap = 'round'
+      ctx.lineJoin = 'round'
+      ctx.beginPath()
+      ctx.moveTo(30*s, 66*s)
+      ctx.lineTo(44*s, 80*s)
+      ctx.lineTo(70*s, 54*s)
+      ctx.stroke()
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath()
+      ctx.moveTo(x + r, y)
+      ctx.lineTo(x + w - r, y)
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r)
+      ctx.lineTo(x + w, y + h - r)
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h)
+      ctx.lineTo(x + r, y + h)
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r)
+      ctx.lineTo(x, y + r)
+      ctx.quadraticCurveTo(x, y, x + r, y)
+      ctx.closePath()
+    }
+
+    function download(size) {
+      drawIcon(size)
+      const canvas = document.getElementById('canvas')
+      const a = document.createElement('a')
+      a.download = `icon-${size}.png`
+      a.href = canvas.toDataURL('image/png')
+      a.click()
+    }
+
+    // Preview com 192
+    drawIcon(192)
+  </script>
+</body>
+</html>
