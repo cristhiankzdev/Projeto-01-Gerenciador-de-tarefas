@@ -1315,6 +1315,28 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
 }
 .cal-popup-input:focus { border-color: var(--primary); }
 
+.cal-popup-emojis {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.cal-emoji-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.cal-emoji-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+.cal-emoji-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+
 .cal-popup-colors {
   display: flex;
   gap: 6px;
