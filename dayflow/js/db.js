@@ -170,7 +170,7 @@ export async function uploadAvatar(userId, file) {
 export async function getEvents(userId, startDate, endDate) {
   const { data, error } = await supabase
     .from('events')
-    .select('date, color, description')
+    .select('date, color, description, emoji')
     .eq('user_id', userId)
     .gte('date', startDate)
     .lte('date', endDate)
