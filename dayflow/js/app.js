@@ -94,7 +94,18 @@ async function init() {
   await loadAndRenderTasks()
   renderDailyTip()
   await initNotes()
-  initCalendar(currentUser.id)
+  initCalendar(currentUser.id, (date) => openTaskModal(null, date), loadAndRenderEvents)
+
+  document.getElementById('grid-nav-prev').addEventListener('click', () => {
+    gridOffset -= 1
+    renderGrid()
+    loadAndRenderTasks()
+  })
+  document.getElementById('grid-nav-next').addEventListener('click', () => {
+    gridOffset += 1
+    renderGrid()
+    loadAndRenderTasks()
+  })
 
   document.getElementById('logout-btn').addEventListener('click', signOut)
 
