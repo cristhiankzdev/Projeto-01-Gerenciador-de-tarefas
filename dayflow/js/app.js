@@ -215,6 +215,7 @@ function renderGrid() {
       const task = tasks.find(t => t.id === taskId)
       if (!task || task.date === newDate) return
       const updated = await updateTask(taskId, { date: newDate })
+      if (googleSync) gcalUpdate(updated)
       const i = tasks.findIndex(t => t.id === taskId)
       if (i !== -1) tasks[i] = updated
       renderTasksInGrid()
