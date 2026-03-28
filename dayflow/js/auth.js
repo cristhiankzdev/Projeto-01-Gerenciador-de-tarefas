@@ -98,18 +98,24 @@ if (loginForm) {
     errorEl.textContent = ''
     errorEl.className = 'form-error'
     setLoading(btn, true)
+    let result
     try {
-      const result = await signIn(
+      result = await signIn(
         document.getElementById('login-email').value.trim(),
         document.getElementById('login-password').value
       )
-      const { data: prof } = await supabase.from('profiles').select('is_admin').eq('id', result.user.id).single()
-      window.location.href = prof?.is_admin ? 'admin.html' : 'app.html'
     } catch (err) {
       errorEl.textContent = err.message
-    } finally {
       setLoading(btn, false)
+      return
     }
+    // Profile fetch is non-critical — failed fetch still redirects to app.html
+    let dest = 'app.html'
+    try {
+      const { data: prof } = await supabase.from('profiles').select('is_admin').eq('id', result.user.id).single()
+      if (prof?.is_admin) dest = 'admin.html'
+    } catch { /* ignore */ }
+    window.location.href = dest
   })
 
   // Register
