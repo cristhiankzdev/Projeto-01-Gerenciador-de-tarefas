@@ -1785,7 +1785,7 @@ h1, h2, h3, h4 { font-family: 'DM Sans', sans-serif; color: var(--text); }
 @media (max-width: 640px) {
   .auth-card { padding: 28px 24px; }
   .app-header { padding: 10px 16px; }
-  .tip-bar { padding: 8px 16px; }
+  .xp-bar-container { padding: 8px 16px; }
   .app-main { padding: 14px 12px; }
   .form-row { grid-template-columns: 1fr; }
   .modal-footer { flex-direction: column; gap: 12px; }
