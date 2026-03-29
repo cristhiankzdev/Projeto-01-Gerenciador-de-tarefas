@@ -93,7 +93,7 @@ async function init() {
   renderGrid()
   await autoAdvancePastTasks().catch(() => {})
   await loadAndRenderTasks()
-  renderDailyTip()
+  await initGamification(currentUser.id)
   await initNotes()
   initCalendar(currentUser.id, (date) => openTaskModal(null, date), loadAndRenderEvents)
 
