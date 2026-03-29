@@ -476,11 +476,12 @@ async function toggleComplete(task, btn) {
   const updated = await updateTask(task.id, {
     completed: newCompleted,
     completed_at: newCompleted ? new Date().toISOString() : null,
-    xp_awarded: newCompleted ? true : task.xp_awarded,
+    xp_awarded: newCompleted ? true : false,
   })
   const i = tasks.findIndex(t => t.id === task.id)
   if (i !== -1) tasks[i] = updated
   if (newCompleted && !task.xp_awarded) await awardTaskXP(task)
+  else if (!newCompleted && task.xp_awarded) await revokeTaskXP(task)
   renderTasksInGrid()
 }
 
