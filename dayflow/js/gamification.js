@@ -155,6 +155,29 @@ export async function awardTaskXP(task) {
   }
 }
 
+// ── Revoke XP (task uncompleted) ──────────────────────────────────────────────
+export async function revokeTaskXP(task) {
+  if (!currentUserId) return
+  if (!task.xp_awarded) return
+
+  const complexity = task.complexity || 'media'
+  const xpLoss = XP_TABLE[complexity] ?? 200n
+
+  userTotalXP = userTotalXP > xpLoss ? userTotalXP - xpLoss : 0n
+  userLevel   = getLevelFromXP(userTotalXP)
+
+  try {
+    await updateXPProfile(currentUserId, {
+      total_xp: userTotalXP.toString(),
+      level: userLevel,
+    })
+  } catch (e) {
+    console.error('XP revoke error:', e)
+  }
+
+  renderXPBar()
+}
+
 // ── Render XP bar ─────────────────────────────────────────────────────────────
 export function renderXPBar() {
   const levelEl    = document.getElementById('xp-level-number')
