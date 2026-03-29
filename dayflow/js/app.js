@@ -3,6 +3,7 @@ import { getTasks, createTask, updateTask, deleteTask, getCategories, createCate
 import { launchConfetti } from './confetti.js'
 import { initCategories } from './categories.js'
 import { initCalendar } from './calendar.js'
+import { initGamification, awardTaskXP, renderXPBar, XP_TABLE } from './gamification.js'
 // ── State ─────────────────────────────────────────────────────────────────────
 let currentUser = null
 let categories = []
