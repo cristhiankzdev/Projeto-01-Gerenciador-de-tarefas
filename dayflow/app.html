@@ -44,10 +44,23 @@
     </div>
   </header>
 
-  <!-- ── Dica do Dia ─────────────────────────────────────────────────────── -->
-  <div class="tip-bar" role="note">
-    <span class="tip-icon" aria-hidden="true">💡</span>
-    <span id="daily-tip-text"></span>
+  <!-- ── XP Bar ───────────────────────────────────────────────────────────── -->
+  <div class="xp-bar-container" id="xp-bar-container" role="status" aria-label="Progresso de XP">
+    <div class="xp-level-badge" id="xp-level-badge">
+      <span class="xp-level-label">Nível</span>
+      <span class="xp-level-number" id="xp-level-number">0</span>
+    </div>
+    <div class="xp-progress-section">
+      <div class="xp-progress-track">
+        <div class="xp-progress-fill" id="xp-progress-fill" style="width:0%"></div>
+      </div>
+      <div class="xp-progress-info">
+        <span id="xp-current-info">0 / 500 XP</span>
+        <span id="xp-next-info">500 XP para o nível 1</span>
+      </div>
+    </div>
+    <div id="xp-milestone" class="xp-milestone" style="display:none"></div>
+    <button class="xp-table-btn icon-btn" id="xp-table-btn" title="Tabela de Progressão" aria-label="Tabela de Progressão">📊</button>
   </div>
 
   <!-- ── Main ────────────────────────────────────────────────────────────── -->
