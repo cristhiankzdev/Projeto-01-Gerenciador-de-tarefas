@@ -41,17 +41,19 @@ let userTotalXP   = 0n   // BigInt
 let userLevel     = 0
 
 // ── Math functions (BigInt) ───────────────────────────────────────────────────
-// XP needed to go from level n to n+1
+// XP needed to go from level n to n+1 — linear progression: 500, 550, 600, ...
 export function xpForLevel(n) {
   if (n >= MAX_LEVEL) return 0n
-  return 500n * (2n ** BigInt(n))
+  return 500n + 50n * BigInt(n)
 }
 
 // Total XP required to reach level L from level 0
+// Sum of (500 + 50*i) for i=0..L-1 = 500*L + 25*L*(L-1)
 export function xpToReachLevel(L) {
   if (L <= 0) return 0n
   if (L > MAX_LEVEL) L = MAX_LEVEL
-  return 500n * ((2n ** BigInt(L)) - 1n)
+  const l = BigInt(L)
+  return 500n * l + 25n * l * BigInt(L - 1)
 }
 
 // Derive level from total XP
