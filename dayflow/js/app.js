@@ -17,23 +17,6 @@ let modalSteps = []
 let notesDebounce = null
 const collapsedCategories = new Set()
 
-const TIPS = [
-  'Cada pequeno passo te aproxima do seu grande objetivo.',
-  'Hoje é uma nova oportunidade para fazer algo incrível.',
-  'A consistência é a chave do sucesso. Continue!',
-  'Você é mais forte do que imagina. Vai em frente!',
-  'Foque no progresso, não na perfeição.',
-  'Um dia de cada vez. Você consegue!',
-  'Suas tarefas de hoje constroem seu amanhã.',
-  'Pequenas conquistas diárias criam grandes resultados.',
-  'Organize seu dia e conquiste seus sonhos.',
-  'Cada tarefa concluída é uma vitória. Celebre!',
-  'O segredo é começar. Você já está no caminho certo.',
-  'Produtividade com leveza: é assim que se chega longe.',
-  'Cuide de você enquanto cuida das suas tarefas.',
-  'Um passo de cada vez leva ao topo.',
-  'Seu esforço de hoje será sua recompensa de amanhã.',
-]
 
 const DAY_NAMES = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 const MONTH_NAMES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
