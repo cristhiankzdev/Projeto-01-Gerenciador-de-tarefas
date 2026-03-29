@@ -752,6 +752,7 @@ async function saveTask() {
     title,
     category_id: document.getElementById('task-category').value || null,
     priority: document.getElementById('task-priority').value,
+    complexity: document.getElementById('task-complexity').value,
     notes: document.getElementById('task-notes').value.trim() || null,
     date: editingDate,
     type: isSteps ? 'steps' : 'simple',
