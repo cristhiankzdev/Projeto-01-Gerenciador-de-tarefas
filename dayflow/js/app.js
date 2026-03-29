@@ -125,18 +125,6 @@ async function init() {
   if (typeof lucide !== 'undefined') lucide.createIcons()
 }
 
-// ── Daily tip ─────────────────────────────────────────────────────────────────
-function renderDailyTip() {
-  const start = new Date(new Date().getFullYear(), 0, 0)
-  const dayOfYear = Math.floor((Date.now() - start) / 86400000)
-  document.getElementById('daily-tip-text').textContent = TIPS[dayOfYear % TIPS.length]
-
-  // Schedule re-render at next midnight
-  const now = new Date()
-  const msUntilMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1) - now
-  setTimeout(renderDailyTip, msUntilMidnight)
-}
-
 // ── Categories ────────────────────────────────────────────────────────────────
 async function loadCategories() {
   categories = await getCategories(currentUser.id)
