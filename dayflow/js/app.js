@@ -506,11 +506,12 @@ async function setStepIndex(task, newCurrentStep) {
     current_step: Math.max(0, newCurrentStep),
     completed: isComplete,
     completed_at: isComplete ? new Date().toISOString() : null,
-    xp_awarded: isComplete ? true : task.xp_awarded,
+    xp_awarded: isComplete ? true : false,
   })
   const i = tasks.findIndex(t => t.id === task.id)
   if (i !== -1) tasks[i] = updated
   if (isComplete && !task.xp_awarded) await awardTaskXP(task)
+  else if (!isComplete && task.xp_awarded) await revokeTaskXP(task)
   renderTasksInGrid()
 }
 
