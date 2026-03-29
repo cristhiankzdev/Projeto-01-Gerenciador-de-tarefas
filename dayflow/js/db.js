@@ -147,6 +147,42 @@ export async function getProfile(userId) {
   return data
 }
 
+// ── XP / Gamification ────────────────────────────────────────────────────────
+
+export async function getXPProfile(userId) {
+  const { data } = await supabase
+    .from('profiles')
+    .select('total_xp, level')
+    .eq('id', userId)
+    .single()
+  return data
+}
+
+export async function updateXPProfile(userId, { total_xp, level }) {
+  const { error } = await supabase
+    .from('profiles')
+    .upsert({ id: userId, total_xp, level })
+  if (error) throw error
+}
+
+export async function addXPHistory(userId, { task_id, task_title, complexity, xp_amount }) {
+  const { error } = await supabase
+    .from('xp_history')
+    .insert({ user_id: userId, task_id, task_title, complexity, xp_amount })
+  if (error) throw error
+}
+
+export async function getXPHistory(userId, limit = 20) {
+  const { data, error } = await supabase
+    .from('xp_history')
+    .select('task_title, complexity, xp_amount, created_at')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+  if (error) throw error
+  return data ?? []
+}
+
 export async function updateProfile(userId, updates) {
   const { error } = await supabase
     .from('profiles')
