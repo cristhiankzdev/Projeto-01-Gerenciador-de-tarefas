@@ -567,6 +567,15 @@ function showToast(message, undoFn = null) {
   }
 }
 
+// ── XP preview in modal ───────────────────────────────────────────────────────
+const XP_AMOUNTS = { facil: 100, media: 200, dificil: 300, muito_dificil: 600, extremamente_dificil: 1000 }
+function updateXPPreview() {
+  const sel = document.getElementById('task-complexity')
+  const preview = document.getElementById('modal-xp-preview')
+  if (!sel || !preview) return
+  preview.textContent = `+${XP_AMOUNTS[sel.value] ?? 200} XP`
+}
+
 // ── Task modal ────────────────────────────────────────────────────────────────
 function initTaskModal() {
   const modal = document.getElementById('task-modal')
