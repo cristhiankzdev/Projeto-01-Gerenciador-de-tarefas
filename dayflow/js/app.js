@@ -697,7 +697,9 @@ function openTaskModal(task = null, date = null) {
 
   document.getElementById('task-title-input').value = task?.title ?? ''
   document.getElementById('task-priority').value = task?.priority ?? 'media'
+  document.getElementById('task-complexity').value = task?.complexity ?? 'media'
   document.getElementById('task-notes').value = task?.notes ?? ''
+  updateXPPreview()
 
   const isSteps = task?.type === 'steps'
   document.getElementById('task-type-toggle').checked = isSteps
